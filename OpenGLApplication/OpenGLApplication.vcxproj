@@ -49,6 +49,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\assimp-master\assimp-master\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -65,7 +66,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\assimp-master\assimp-master\code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -73,7 +74,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>OpenGL32.lib;glu32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glu32.lib;freeglut.lib;assimpd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -113,6 +114,7 @@
   <ItemGroup>
     <ClCompile Include="BaseStereoView.cpp" />
     <ClCompile Include="ChildView.cpp" />
+    <ClCompile Include="ModelView.cpp" />
     <ClCompile Include="DIBSurface.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OpenGLApplication.cpp" />
@@ -129,6 +131,7 @@
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="DIBSurface.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="ModelView.h" />
     <ClInclude Include="OpenGLApplication.h" />
     <ClInclude Include="OpenGLSurface.h" />
     <ClInclude Include="OpenGLView.h" />
