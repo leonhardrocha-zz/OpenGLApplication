@@ -22,9 +22,10 @@ public:
 protected:
 	virtual void SetupView() = 0;
 	//	Main OpenGL functions.
-	virtual void DoStereo() = 0;
-	virtual void InitScene() = 0;
-	virtual void RenderScene() = 0;
+	virtual void SetupScene() = 0;
+	virtual void RenderStereoView() = 0;
+	virtual void RenderLeftView() = 0;
+	virtual void RenderRightView() = 0;
 	// Generated message map functions
 protected:
 	int viewWidth;
