@@ -112,7 +112,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseStereoView.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="ModelView.cpp" />
     <ClCompile Include="DIBSurface.cpp" />

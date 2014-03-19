@@ -41,6 +41,8 @@ static float angle = 0.f;
 #define new DEBUG_NEW
 #endif
 
+BEGIN_MESSAGE_MAP(CModelView, COpenGLView)
+END_MESSAGE_MAP()
 
 // CModelView
 
@@ -58,7 +60,7 @@ CModelView::CModelView()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_FILE,"assimp_log.txt");
 	aiAttachLogStream(&stream);
 
-	SetupScene();
+	SetupView();
 }
 
 CModelView::~CModelView()
@@ -76,11 +78,6 @@ CModelView::~CModelView()
 }
 
 
-BEGIN_MESSAGE_MAP(CModelView, COpenGLView)
-END_MESSAGE_MAP()
-
-
-
 // CModelView message handlers
 
 BOOL CModelView::PreCreateWindow(CREATESTRUCT& cs) 
@@ -96,7 +93,7 @@ BOOL CModelView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void CModelView::SetupScene()
+void CModelView::SetupView()
 {
 	//	Clear the buffers.
 	glClearColor(0, 0, 0, 1);
@@ -115,51 +112,14 @@ void CModelView::SetupScene()
 
 void CModelView::RenderScene()
 {
-	//	Look at the middle of the scene.
-	glLoadIdentity();
-	gluLookAt(-10, 10, 10, 0, 0, 0, 0, 1, 0);
-
-	//	Create the grid.
-
-    glBegin(GL_LINES);
-	
-	for (int i = -10; i <= 10; i++)
-    {
-		glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
-        glVertex3f((float)i, 0, -10);
-        glVertex3f((float)i, 0, 10);
-        glVertex3f(-10, 0, (float)i);
-        glVertex3f(10, 0, (float)i);
-	}
-	
-	glEnd();
-
-	//	Create the axies.
-	glBegin(GL_LINES);
-
-		glColor4f(1, 0, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(3, 0, 0);
-		glColor4f(0, 1, 0, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 3, 0);
-		glColor4f(0, 0, 1, 1);
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, 3);
-
-	glEnd();
-	glFlush();
 }
 
 void CModelView::DoOpenGLDraw()
 {
-	RenderScene();	
 }
 
 void CModelView::FinishScene()
 {
-
-
 }
 
 
@@ -394,22 +354,25 @@ void CModelView::do_motion (void)
 	glutPostRedisplay ();
 }
 
-// ----------------------------------------------------------------------------
-void CModelView::display(void)
+void CModelView::InitScene()
 {
-	float tmp;
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.f,0.f,3.f,0.f,0.f,-5.f,0.f,1.f,0.f);
+}
 
+
+// ----------------------------------------------------------------------------
+void CModelView::display(void)
+{
+	glMatrixMode(GL_MODELVIEW);
 	// rotate it around the y axis
 	glRotatef(angle,0.f,1.f,0.f);
 
 	// scale the whole asset to fit into our view frustum 
-	tmp = scene_max.x-scene_min.x;
+	float tmp = scene_max.x-scene_min.x;
 	tmp = aisgl_max(scene_max.y - scene_min.y,tmp);
 	tmp = aisgl_max(scene_max.z - scene_min.z,tmp);
 	tmp = 1.f / tmp;

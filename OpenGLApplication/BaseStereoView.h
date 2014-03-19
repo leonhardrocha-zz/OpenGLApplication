@@ -12,10 +12,6 @@ class CBaseStereoView
 
 public:
 
-	//	Constructor / Destructor.
-	CBaseStereoView() {};
-	virtual ~CBaseStereoView() {};
-
 // Attributes
 public:
 
@@ -24,10 +20,11 @@ public:
 // Overrides
 // Overrides
 protected:
+	virtual void SetupView() = 0;
 	//	Main OpenGL functions.
-	virtual void SetupScene() {};
-	virtual void DoStereo() {};
-	virtual void RenderScene() {};
+	virtual void DoStereo() = 0;
+	virtual void InitScene() = 0;
+	virtual void RenderScene() = 0;
 	// Generated message map functions
 protected:
 	int viewWidth;

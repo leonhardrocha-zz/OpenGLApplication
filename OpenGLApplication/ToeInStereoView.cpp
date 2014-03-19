@@ -12,12 +12,14 @@
 #endif
 
 // CBaseStereoView
-BEGIN_MESSAGE_MAP(CToeInStereoView, COpenGLView)
+BEGIN_MESSAGE_MAP(CToeInStereoView, CModelView)
 END_MESSAGE_MAP()
 
 CToeInStereoView::CToeInStereoView()
 {
-	SetupScene();
+	SetupView();
+
+	InitScene();
 }
 
 BOOL CToeInStereoView::PreCreateWindow(CREATESTRUCT& cs) 
@@ -34,7 +36,7 @@ BOOL CToeInStereoView::PreCreateWindow(CREATESTRUCT& cs)
 }
 
 
-void CToeInStereoView::SetupScene()
+void CToeInStereoView::SetupView()
 {
 	depthZ = 10.0f;                                     //depth of the object drawing
 	fovy = 45;                                          //field of view in y-axis
@@ -45,9 +47,11 @@ void CToeInStereoView::SetupScene()
 	farZ = 30.0;                                        //far clipping plane
 	screenZ = 10.0;                                     //screen projection plane
 	IOD = 0.5;
+}
 
-	
-		//	Clear the buffers.
+void CToeInStereoView::InitScene()
+{
+	//	Clear the buffers.
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -60,11 +64,8 @@ void CToeInStereoView::SetupScene()
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glLineWidth(1.5f);
 	glPopAttrib();
-}
 
-void CToeInStereoView::DoStereo()							//toed-in stereo
-{
-	glViewport (0, 0, viewWidth/2, viewHeight);				 //sets drawing viewport
+	glViewport (0, 0, viewWidth, viewHeight);				 //sets drawing viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
@@ -73,12 +74,15 @@ void CToeInStereoView::DoStereo()							//toed-in stereo
 		
 	glDrawBuffer(GL_BACK);                                   //draw into both back buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      //clear color and depth buffers
+}
 
+void CToeInStereoView::RenderLeftView()
+{
 	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
+	glViewport (0, 0, viewWidth/2, viewHeight);	 //sets drawing viewport
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
 
-	//gluLookAt(-10, 10, 10, 0, 0, 0, 0, 1, 0);
 	gluLookAt(-IOD/2,                                      //set camera position  x=-IOD/2	
 			0.0,                                           //                     y=0.0
 			0.0,                                           //                     z=0.0
@@ -95,11 +99,15 @@ void CToeInStereoView::DoStereo()							//toed-in stereo
 		RenderScene();
 	}
 	glPopMatrix();
+}
 
+void CToeInStereoView::RenderRightView()
+{
 	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
+	glViewport (viewWidth/2-1, 0, viewWidth/2, viewHeight);	 //sets drawing viewport
 	glMatrixMode(GL_MODELVIEW);
-	glViewport (viewWidth/2-1, 0, viewWidth/2, viewHeight);				 //sets drawing viewport
 	glLoadIdentity();                                        //reset modelview matrix
+
 	gluLookAt(IOD/2,									   //set camera position  x=+IOD/2
 			0.0,                                           //                     y=0.0
 			0.0,                                           //                     z=0.0
@@ -116,8 +124,15 @@ void CToeInStereoView::DoStereo()							//toed-in stereo
 		RenderScene();
 	}
 	glPopMatrix();
+}
+
+
+void CToeInStereoView::DoStereo()							//toed-in stereo
+{
+	RenderLeftView();
+	
+	RenderRightView();
  
-	//glutSwapBuffers();
     glFlush();
 }
 
@@ -125,29 +140,10 @@ void CToeInStereoView::DoStereo()							//toed-in stereo
 void CToeInStereoView::DoOpenGLDraw()
 {
 	DoStereo();
-	//RenderScene();
 }
 
 void  CToeInStereoView::RenderScene()
 {
-	////glViewport (0, 0, viewWidth, viewHeight);
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-	//gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadIdentity();
-	//
-	//glDrawBuffer(GL_BACK);                                   //draw into both back buffers
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      //clear color and depth buffers
-
-	//glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
-	//glMatrixMode(GL_MODELVIEW);
-
-	////	Look at the middle of the scene.
-	//gluLookAt(-10, 10, 10, 0, 0, 0, 0, 1, 0);
-
-	//	Create the grid.
-
     glBegin(GL_LINES);
 	
 	for (int i = -10; i <= 10; i++)
@@ -187,7 +183,7 @@ void CToeInStereoView::DoOpenGLResize(int nWidth, int nHeight)
 	glLoadIdentity();
 
 	//	Create a perspective viewport transformation.
-	gluPerspective(45.0f, (float)nWidth / (float)nHeight, 0.1f, 100.0f);
+	gluPerspective(fovy, aspect, nearZ, farZ);
 
 	//	Go back to the modelview matrix.
 	glMatrixMode(GL_MODELVIEW);

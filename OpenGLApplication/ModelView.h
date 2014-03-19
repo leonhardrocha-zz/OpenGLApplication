@@ -30,7 +30,7 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 	//	Main OpenGL functions.
-	virtual void SetupScene();
+	virtual void SetupView();
 	virtual void RenderScene();
 	virtual void FinishScene();
 	virtual void DoOpenGLDraw();
@@ -39,6 +39,8 @@ public:
 	// Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+	virtual void InitScene();
+	virtual void display(void);
 
 
 private:
@@ -49,7 +51,6 @@ private:
 	void set_float4(float f[4], float a, float b, float c, float d);
 	void apply_material(const aiMaterial *mtl);
 	void recursive_render (const aiScene *sc, const aiNode* nd);
-	void do_motion (void);
-	void display(void);
+	void do_motion (void);	
 };
 

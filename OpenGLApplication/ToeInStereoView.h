@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include "OpenGLView.h"
+#include "ModelView.h"
 #include "BaseStereoView.h"
 
 // CChildView window
 
-class CToeInStereoView : public COpenGLView, CBaseStereoView
+class CToeInStereoView : public CModelView, CBaseStereoView
 {
 
 public:
@@ -21,9 +21,12 @@ public:
 // Overrides
 protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void SetupView();
 	//	Main OpenGL functions.
-	virtual void SetupScene();
+	virtual void InitScene();
 	virtual void RenderScene();
+	virtual void RenderLeftView();
+	virtual void RenderRightView();
 	virtual void DoStereo();                                 //intraocular distance
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
