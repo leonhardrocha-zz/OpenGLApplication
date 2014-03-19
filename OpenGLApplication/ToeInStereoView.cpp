@@ -18,8 +18,7 @@ END_MESSAGE_MAP()
 CToeInStereoView::CToeInStereoView()
 {
 	SetupView();
-
-	InitScene();
+	SetupScene();
 }
 
 BOOL CToeInStereoView::PreCreateWindow(CREATESTRUCT& cs) 
@@ -49,7 +48,7 @@ void CToeInStereoView::SetupView()
 	IOD = 0.5;
 }
 
-void CToeInStereoView::InitScene()
+void CToeInStereoView::SetupScene()
 {
 	//	Clear the buffers.
 	glClearColor(0, 0, 0, 1);
@@ -127,7 +126,7 @@ void CToeInStereoView::RenderRightView()
 }
 
 
-void CToeInStereoView::DoStereo()							//toed-in stereo
+void CToeInStereoView::RenderStereoView()							//toed-in stereo
 {
 	RenderLeftView();
 	
@@ -139,7 +138,7 @@ void CToeInStereoView::DoStereo()							//toed-in stereo
 
 void CToeInStereoView::DoOpenGLDraw()
 {
-	DoStereo();
+	RenderStereoView();
 }
 
 void  CToeInStereoView::RenderScene()

@@ -48,6 +48,24 @@ END_MESSAGE_MAP()
 
 CModelView::CModelView()
 {
+	if(LoadAsset("C:\\Users\\UDESC\\Documents\\GitHub\\OpenGLApplication\\Mickey Mouse\\Mickey Mouse.obj") == 0)
+	{
+		SetupScene();
+	}	
+}
+
+CModelView::~CModelView()
+{
+	FinishScene();
+	
+	// We added a log stream to the library, it's our job to disable it
+	// again. This will definitely release the last resources allocated
+	// by Assimp.
+	//aiDetachAllLogStreams();
+}
+
+void CModelView::SetupLog()
+{
 	aiLogStream stream;
 	// get a handle to the predefined STDOUT log stream and attach
 	// it to the logging system. It remains active for all further
@@ -60,21 +78,6 @@ CModelView::CModelView()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_FILE,"assimp_log.txt");
 	aiAttachLogStream(&stream);
 
-	SetupView();
-}
-
-CModelView::~CModelView()
-{
-	FinishScene();
-	// cleanup - calling 'aiReleaseImport' is important, as the library 
-	// keeps internal resources until the scene is freed again. Not 
-	// doing so can cause severe resource leaking.
-	aiReleaseImport(scene);
-
-	// We added a log stream to the library, it's our job to disable it
-	// again. This will definitely release the last resources allocated
-	// by Assimp.
-	aiDetachAllLogStreams();
 }
 
 
@@ -93,35 +96,35 @@ BOOL CModelView::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
-void CModelView::SetupView()
-{
-	//	Clear the buffers.
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	//	Set up some nice attributes for drawing the grid.
-	glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDisable(GL_LIGHTING);
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	glLineWidth(1.5f);
-	glPopAttrib();
-}
-
 void CModelView::RenderScene()
 {
+	display();
 }
 
 void CModelView::DoOpenGLDraw()
 {
+	RenderScene();
 }
 
 void CModelView::FinishScene()
 {
+	// cleanup - calling 'aiReleaseImport' is important, as the library 
+	// keeps internal resources until the scene is freed again. Not 
+	// doing so can cause severe resource leaking.
+	aiReleaseImport(scene);
 }
 
+void CModelView::SetupScene()
+{
+	//glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glViewport(0,0, 1024, 768);
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0.f,0.f,10.f,0.f,0.f,-5.f,0.f,1.f,0.f);
+}
 
 void CModelView::DoOpenGLResize(int nWidth, int nHeight)
 {
@@ -354,15 +357,6 @@ void CModelView::do_motion (void)
 	glutPostRedisplay ();
 }
 
-void CModelView::InitScene()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0.f,0.f,3.f,0.f,0.f,-5.f,0.f,1.f,0.f);
-}
-
 
 // ----------------------------------------------------------------------------
 void CModelView::display(void)
@@ -375,7 +369,7 @@ void CModelView::display(void)
 	float tmp = scene_max.x-scene_min.x;
 	tmp = aisgl_max(scene_max.y - scene_min.y,tmp);
 	tmp = aisgl_max(scene_max.z - scene_min.z,tmp);
-	tmp = 1.f / tmp;
+	tmp = 1f / tmp;
 	glScalef(tmp, tmp, tmp);
 
         // center the model
@@ -392,12 +386,13 @@ void CModelView::display(void)
 	    recursive_render(scene, scene->mRootNode);
 	    glEndList();
 	}
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glCallList(scene_list);
 
-	glutSwapBuffers();
+	/*glFlush();
 
-	do_motion();
+	do_motion();*/
 }
 
 // ----------------------------------------------------------------------------

@@ -30,18 +30,17 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 	//	Main OpenGL functions.
-	virtual void SetupView();
+	virtual void SetupScene();
 	virtual void RenderScene();
 	virtual void FinishScene();
-	virtual void DoOpenGLDraw();
-	virtual void DoOpenGLResize(int nWidth, int nHeight);
 	virtual int LoadAsset (const char* path);
 	// Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual void InitScene();
+	virtual void DoOpenGLDraw();
+	virtual void DoOpenGLResize(int nWidth, int nHeight);
 	virtual void display(void);
-
+	virtual void SetupLog();
 
 private:
 	void GetBoundingBoxForNode(const aiNode* nd, aiVector3D* min, aiVector3D* max, aiMatrix4x4* traf);

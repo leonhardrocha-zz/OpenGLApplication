@@ -5,7 +5,8 @@
 #pragma once
 
 //#include "ChildView.h"
-#include "ToeInStereoView.h"
+#include "ModelView.h"
+//#include "ToeInStereoView.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -30,7 +31,8 @@ public:
 
 protected:  // control bar embedded members
 	CStatusBar  m_wndStatusBar;
-	CToeInStereoView    m_wndView;
+	/*CToeInStereoView    m_wndView;*/
+	CModelView    m_wndView;
 	//CChildView    m_wndView;
 
 // Generated message map functions

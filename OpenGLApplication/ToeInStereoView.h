@@ -23,11 +23,11 @@ protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void SetupView();
 	//	Main OpenGL functions.
-	virtual void InitScene();
+	virtual void SetupScene();
 	virtual void RenderScene();
+	virtual void RenderStereoView();
 	virtual void RenderLeftView();
 	virtual void RenderRightView();
-	virtual void DoStereo();                                 //intraocular distance
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
 
