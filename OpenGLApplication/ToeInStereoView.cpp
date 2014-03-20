@@ -1,37 +1,16 @@
-// BaseStereoView.cpp : implementation of the CChildView class
+// ToeInStereoView.cpp : implementation of the CToeInStereoView class
 //
-
-#include "stdafx.h"
-#include "OpenGLApplication.h"
 #include "ToeInStereoView.h"
-#include "GL\glu.h"
-#include "GL\glut.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-// CBaseStereoView
-BEGIN_MESSAGE_MAP(CToeInStereoView, CModelView)
-END_MESSAGE_MAP()
 
 CToeInStereoView::CToeInStereoView()
 {
 	SetupView();
 	SetupScene();
-}
-
-BOOL CToeInStereoView::PreCreateWindow(CREATESTRUCT& cs) 
-{
-	if (!CWnd::PreCreateWindow(cs))
-		return FALSE;
-
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
-
-	return TRUE;
 }
 
 
@@ -187,4 +166,3 @@ void CToeInStereoView::DoOpenGLResize(int nWidth, int nHeight)
 	//	Go back to the modelview matrix.
 	glMatrixMode(GL_MODELVIEW);
 }
-

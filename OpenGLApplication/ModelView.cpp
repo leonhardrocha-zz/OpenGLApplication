@@ -10,18 +10,12 @@
 // have this configuration built.
 // ----------------------------------------------------------------------------
 
-// ChildView.cpp : implementation of the CModelView class
+// ModelView.cpp : implementation of the CModelView class
 //
 
-#include "stdafx.h"
-#include "OpenGLApplication.h"
 #include "ModelView.h"
-#include "GL\glut.h"
-
 #include <stdlib.h>
 #include <stdio.h>
-
-#include <GL\glut.h>
 
 // the global Assimp scene object
 const aiScene* scene = NULL;
@@ -36,13 +30,9 @@ static float angle = 0.f;
 
 // ----------------------------------------------------------------------------
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-BEGIN_MESSAGE_MAP(CModelView, COpenGLView)
-END_MESSAGE_MAP()
 
 // CModelView
 
@@ -80,21 +70,6 @@ void CModelView::SetupLog()
 
 }
 
-
-// CModelView message handlers
-
-BOOL CModelView::PreCreateWindow(CREATESTRUCT& cs) 
-{
-	if (!CWnd::PreCreateWindow(cs))
-		return FALSE;
-
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
-		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
-
-	return TRUE;
-}
 
 void CModelView::RenderScene()
 {
@@ -411,5 +386,3 @@ int CModelView::LoadAsset(const char* path)
 	}
 	return 1;
 }
-
-// ----------------------------------------------------------------------------

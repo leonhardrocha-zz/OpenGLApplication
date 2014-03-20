@@ -1,17 +1,7 @@
-// ChildView.h : interface of the CModelView class
-//
-
-
-#pragma once
-
-#include "OpenGLView.h"
-// assimp include files. These three are usually needed.
-#include <assimp/cimport.h>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 // CModelView window
+#include "OpenGLHelper.h"
 
-class CModelView : public COpenGLView
+class CModelView
 {
 
 public:
@@ -26,17 +16,12 @@ public:
 // Operations
 public:
 // Overrides
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-
+protected:
 	//	Main OpenGL functions.
 	virtual void SetupScene();
 	virtual void RenderScene();
 	virtual void FinishScene();
 	virtual int LoadAsset (const char* path);
-	// Generated message map functions
-protected:
-	DECLARE_MESSAGE_MAP()
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
 	virtual void display(void);

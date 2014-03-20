@@ -18,6 +18,7 @@
     <ProjectGuid>{BB169C6F-9C29-48C1-BCCF-45E03B1B6B5C}</ProjectGuid>
     <RootNamespace>OpenGLApplication</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <ProjectName>OpenGLHelper</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -27,8 +28,8 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -63,10 +64,11 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>OpenGLHelper.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,41 +114,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="ModelView.cpp" />
-    <ClCompile Include="DIBSurface.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="OpenGLApplication.cpp" />
-    <ClCompile Include="OpenGLSurface.cpp" />
-    <ClCompile Include="OpenGLView.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="ToeInStereoView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseStereoView.h" />
-    <ClInclude Include="ChildView.h" />
-    <ClInclude Include="DIBSurface.h" />
-    <ClInclude Include="MainFrm.h" />
     <ClInclude Include="ModelView.h" />
-    <ClInclude Include="OpenGLApplication.h" />
-    <ClInclude Include="OpenGLSurface.h" />
-    <ClInclude Include="OpenGLView.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="OpenGLHelper.h" />
     <ClInclude Include="ToeInStereoView.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\OpenGLApplication.ico" />
-    <None Include="res\OpenGLApplication.rc2" />
-    <None Include="res\Toolbar.bmp" />
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="OpenGLApplication.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
