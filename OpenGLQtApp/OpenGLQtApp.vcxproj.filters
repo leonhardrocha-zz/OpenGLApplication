@@ -74,6 +74,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_OpenGLQtApp.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OpenGLWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OpenGLWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -100,6 +109,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="OpenGLQtApp.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
