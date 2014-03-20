@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
-    Window window;
+    OpenGLQtApp window;
     window.resize(window.sizeHint());
     int desktopArea = QApplication::desktop()->width() *
                      QApplication::desktop()->height();
@@ -17,6 +17,6 @@ int main(int argc, char *argv[])
     else
         window.showMaximized();
 
-	OpenGLQtApp glApp(&window);
+	
     return app.exec();
 }

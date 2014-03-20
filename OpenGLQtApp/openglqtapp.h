@@ -3,6 +3,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_openglqtapp.h"
+#include "GLWidget.h"
 
 class OpenGLQtApp : public QMainWindow
 {
@@ -11,7 +12,10 @@ class OpenGLQtApp : public QMainWindow
 public:
 	OpenGLQtApp(QWidget *parent = 0);
 	~OpenGLQtApp();
+protected:
+    GLWidget *glWidget;
 
+	void keyPressEvent(QKeyEvent *event);
 private:
 	Ui::OpenGLQtAppClass ui;
 };
