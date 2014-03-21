@@ -1,12 +1,6 @@
-// ChildView.h : interface of the CChildView class
-//
+#ifndef _BASE_STEREO_VIEW_H_
+#define _BASE_STEREO_VIEW_H_
 
-
-#pragma once
-
-//#include "ChildView.h"
-
-// CChildView window
 class CBaseStereoView
 {
 
@@ -41,3 +35,4 @@ protected:
 
 };
 
+#endif

@@ -1,4 +1,7 @@
-// CModelView window
+#ifndef _MODEL_VIEW_H_
+#define _MODEL_VIEW_H_
+
+
 #include <vector>
 #include <map>
 #include <IL/il.h>
@@ -126,3 +129,4 @@ private:
 	int TextFileWrite(char *fn, char *s);
 };
 
+#endif

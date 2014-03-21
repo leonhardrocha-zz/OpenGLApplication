@@ -1,7 +1,10 @@
-#ifndef _OpenGLHelper_H_
-#define _OpenGLHelper_H_
+#ifndef _OPENGGL_HELPER_H_
+#define _OPENGGL_HELPER_H_
 #include <windows.h>
 
-//	Include the main OpenGL and GLU headers.
+//	Entry point for OpenGLHelper library
+#include "BaseStereoView.h"
+#include "ToeInStereoView.h"
+#include "ModelView.h"
 
 #endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _TOEIN_STEREO_VIEW_H_
+#define _TOEIN_STEREO_VIEW_H_
+
 
 #include "ModelView.h"
 #include "BaseStereoView.h"
@@ -28,3 +30,4 @@ protected:
 protected:
 };
 
+#endif
