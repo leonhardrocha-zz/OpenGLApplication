@@ -1,7 +1,7 @@
 #ifndef OPENGLQTAPP_H
 #define OPENGLQTAPP_H
-
 #include <QtWidgets/QMainWindow>
+#include <QKeyEvent>
 #include "ui_openglqtapp.h"
 #include "GLWidget.h"
 

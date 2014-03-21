@@ -37,8 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include "stdafx.h"
-#include "openglwindow.h"
+#include "OpenGLWindow.h"
 #include <QtCore/QCoreApplication>
 #include <QtGui/QOpenGLContext>
 #include <QtGui/QOpenGLPaintDevice>
@@ -65,6 +64,7 @@ void OpenGLWindow::render(QPainter *painter)
 
 void OpenGLWindow::initialize()
 {
+
 }
 
 void OpenGLWindow::render()

@@ -50,7 +50,8 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\assimp-master\assimp-master\lib\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\freeglut\lib;C:\Users\UDESC\Downloads\DevIL-SDK-x86-1.7.8\lib;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\lib\Release\Win32;C:\Users\UDESC\Downloads\assimp-master\assimp-master\lib\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;C:\Users\UDESC\Downloads\freeglut\include;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\include;C:\Users\UDESC\Downloads\DevIL-SDK-x86-1.7.8\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -67,7 +68,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>OpenGLHelper.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
@@ -122,6 +123,10 @@
     <ClInclude Include="ModelView.h" />
     <ClInclude Include="OpenGLHelper.h" />
     <ClInclude Include="ToeInStereoView.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dirlightdiffambpix.frag" />
+    <None Include="dirlightdiffambpix.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

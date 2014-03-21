@@ -37,14 +37,11 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
+#include "GLWidget.h"
 #include <QtWidgets>
 #include <QtOpenGL>
 #include <stdafx.h>
 #include <math.h>
-
-#include "glwidget.h"
-#include "qtlogo.h"
 
 
 #ifndef GL_MULTISAMPLE
@@ -117,10 +114,9 @@ void GLWidget::setZRotation(int angle)
 
 void GLWidget::initializeGL()
 {
-    qglClearColor(qtPurple.dark());
+	glewInit();
 
-    logo = new QtLogo(this, 64);
-    logo->setColor(qtGreen.dark());
+    qglClearColor(qtPurple.dark());
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -140,7 +136,6 @@ void GLWidget::paintGL()
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
-    logo->draw();
 }
 
 void GLWidget::resizeGL(int width, int height)

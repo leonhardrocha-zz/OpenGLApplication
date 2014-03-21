@@ -14,8 +14,12 @@
 //
 
 #include "ModelView.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <fstream>
+
+//-----------------------CUT----------------------------------------------
 
 // the global Assimp scene object
 const aiScene* scene = NULL;
@@ -30,18 +34,51 @@ static float angle = 0.f;
 
 // ----------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+#define MatricesUniBufferSize sizeof(float) * 16 * 3
+#define ProjMatrixOffset 0
+#define ViewMatrixOffset sizeof(float) * 16
+#define ModelMatrixOffset sizeof(float) * 16 * 2
+#define MatrixSize sizeof(float) * 16
+
+// Information to render each assimp node
+struct MyMesh{
+
+	GLuint vao;
+	GLuint texIndex;
+	GLuint uniformBlockIndex;
+	int numFaces;
+};
+
+std::vector<struct MyMesh> myMeshes;
+
+// This is for a shader uniform block
+struct MyMaterial{
+
+	float diffuse[4];
+	float ambient[4];
+	float specular[4];
+	float emissive[4];
+	float shininess;
+	int texCount;
+};
+
 
 // CModelView
 
 CModelView::CModelView()
 {
-	if(LoadAsset("C:\\Users\\UDESC\\Documents\\GitHub\\OpenGLApplication\\Mickey Mouse\\Mickey Mouse.obj") == 0)
-	{
-		SetupScene();
-	}	
+	// the global Assimp scene object
+	scene = NULL;
+	vertexLoc = 0; normalLoc = 1; texCoordLoc = 2;
+	// Uniform Bindings Points
+	matricesUniLoc = 1, materialUniLoc = 2;
+	// The sampler uniform for textured models
+	// we are assuming a single texture so this will
+	//always be texture unit 0
+	texUnit=0;
+	modelname = "C:\\Users\\UDESC\\Documents\\GitHub\\OpenGLApplication\\Mickey Mouse\\Mickey Mouse.obj";
+	timebase =0; frame=0;
+	SetupScene();
 }
 
 CModelView::~CModelView()
@@ -54,26 +91,217 @@ CModelView::~CModelView()
 	//aiDetachAllLogStreams();
 }
 
-void CModelView::SetupLog()
+
+// ------------------------------------------------------------
+//
+// Render stuff
+//
+
+// Render Assimp Model
+
+void CModelView::RecursiveRender (const aiScene *sc, const aiNode* nd)
 {
-	aiLogStream stream;
-	// get a handle to the predefined STDOUT log stream and attach
-	// it to the logging system. It remains active for all further
-	// calls to aiImportFile(Ex) and aiApplyPostProcessing.
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
-	aiAttachLogStream(&stream);
+	// Get node transformation matrix
+	aiMatrix4x4 m = nd->mTransformation;
+	// OpenGL matrices are column major
+	m.Transpose();
 
-	// ... same procedure, but this stream now writes the
-	// log messages to assimp_log.txt
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_FILE,"assimp_log.txt");
-	aiAttachLogStream(&stream);
+	// save model matrix and apply node transformation
+	glPushMatrix();
+	glMultMatrixf((float*)&m);
 
+	// draw all meshes assigned to this node
+	for (unsigned int n=0; n < nd->mNumMeshes; ++n){
+		// bind material uniform
+		glBindBufferRange(GL_UNIFORM_BUFFER, materialUniLoc, myMeshes[nd->mMeshes[n]].uniformBlockIndex, 0, sizeof(struct MyMaterial));	
+		// bind texture
+		glBindTexture(GL_TEXTURE_2D, myMeshes[nd->mMeshes[n]].texIndex);
+		// bind VAO
+		glBindVertexArray(myMeshes[nd->mMeshes[n]].vao);
+		// draw
+		glDrawElements(GL_TRIANGLES,myMeshes[nd->mMeshes[n]].numFaces*3,GL_UNSIGNED_INT,0);
+
+	}
+
+	// draw all children
+	for (unsigned int n=0; n < nd->mNumChildren; ++n){
+		RecursiveRender(sc, nd->mChildren[n]);
+	}
+
+	glPopMatrix();
 }
 
 
-void CModelView::RenderScene()
-{
-	display();
+// Rendering Callback Function
+
+void CModelView::RenderScene(void) {
+
+	static float step = 0.0f;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_MODELVIEW);
+	// set camera matrix
+	gluLookAt(camX, camY, camZ, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+	// set the model matrix to the identity Matrix
+	glLoadIdentity();
+
+	// sets the model matrix to a scale matrix so that the model fits in the window
+	glScalef(scaleFactor, scaleFactor, scaleFactor);
+
+	// keep rotating the model
+	glRotatef(step, 0.0f, 1.0f, 0.0f);
+	
+	// use our shader
+	glUseProgram(program);
+
+	// we are only going to use texture unit 0
+	// unfortunately samplers can't reside in uniform blocks
+	// so we have set this uniform separately
+	glUniform1i(texUnit,0);
+
+	RecursiveRender(scene, scene->mRootNode);
+
+	// FPS computation and display
+	frame++;
+	time=glutGet(GLUT_ELAPSED_TIME);
+	if (time - timebase > 1000) {
+		sprintf_s (fpsBuffer,"FPS:%4.2f", frame*1000.0/(time-timebase));
+		timebase = time;
+		frame = 0;
+		glutSetWindowTitle(fpsBuffer);
+	}
+
+	// swap buffers
+	glutSwapBuffers();
+
+	// increase the rotation angle
+	step++;
+}
+
+void CModelView::GenerateVAOsAndUniformBuffer(const aiScene *sc) {
+
+	struct MyMesh aMesh;
+	struct MyMaterial aMat; 
+	GLuint buffer;
+	
+	// For each mesh
+	for (unsigned int n = 0; n < sc->mNumMeshes; ++n)
+	{
+		const aiMesh* mesh = sc->mMeshes[n];
+
+		// create array with faces
+		// have to convert from Assimp format to array
+		unsigned int *faceArray;
+		faceArray = (unsigned int *)malloc(sizeof(unsigned int) * mesh->mNumFaces * 3);
+		unsigned int faceIndex = 0;
+
+		for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
+			const aiFace* face = &mesh->mFaces[t];
+
+			memcpy(&faceArray[faceIndex], face->mIndices,3 * sizeof(unsigned int));
+			faceIndex += 3;
+		}
+		aMesh.numFaces = sc->mMeshes[n]->mNumFaces;
+
+		// generate Vertex Array for mesh
+		glGenVertexArrays(1,&(aMesh.vao));
+		glBindVertexArray(aMesh.vao);
+
+		// buffer for faces
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * mesh->mNumFaces * 3, faceArray, GL_STATIC_DRAW);
+
+		// buffer for vertex positions
+		if (mesh->HasPositions()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mVertices, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(vertexLoc);
+			glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, 0, 0, 0);
+		}
+
+		// buffer for vertex normals
+		if (mesh->HasNormals()) {
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*3*mesh->mNumVertices, mesh->mNormals, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(normalLoc);
+			glVertexAttribPointer(normalLoc, 3, GL_FLOAT, 0, 0, 0);
+		}
+
+		// buffer for vertex texture coordinates
+		if (mesh->HasTextureCoords(0)) {
+			float *texCoords = (float *)malloc(sizeof(float)*2*mesh->mNumVertices);
+			for (unsigned int k = 0; k < mesh->mNumVertices; ++k) {
+
+				texCoords[k*2]   = mesh->mTextureCoords[0][k].x;
+				texCoords[k*2+1] = mesh->mTextureCoords[0][k].y; 
+				
+			}
+			glGenBuffers(1, &buffer);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*2*mesh->mNumVertices, texCoords, GL_STATIC_DRAW);
+			glEnableVertexAttribArray(texCoordLoc);
+			glVertexAttribPointer(texCoordLoc, 2, GL_FLOAT, 0, 0, 0);
+		}
+
+		// unbind buffers
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+	
+		// create material uniform buffer
+		aiMaterial *mtl = sc->mMaterials[mesh->mMaterialIndex];
+			
+		aiString texPath;	//contains filename of texture
+		if(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &texPath)){
+				//bind texture
+				unsigned int texId = textureIdMap[texPath.data];
+				aMesh.texIndex = texId;
+				aMat.texCount = 1;
+			}
+		else
+			aMat.texCount = 0;
+
+		float c[4];
+		set_float4(c, 0.8f, 0.8f, 0.8f, 1.0f);
+		aiColor4D diffuse;
+		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+			color4_to_float4(&diffuse, c);
+		memcpy(aMat.diffuse, c, sizeof(c));
+
+		set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
+		aiColor4D ambient;
+		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
+			color4_to_float4(&ambient, c);
+		memcpy(aMat.ambient, c, sizeof(c));
+
+		set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+		aiColor4D specular;
+		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
+			color4_to_float4(&specular, c);
+		memcpy(aMat.specular, c, sizeof(c));
+
+		set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+		aiColor4D emission;
+		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
+			color4_to_float4(&emission, c);
+		memcpy(aMat.emissive, c, sizeof(c));
+
+		float shininess = 0.0;
+		unsigned int max;
+		aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
+		aMat.shininess = shininess;
+
+		glGenBuffers(1,&(aMesh.uniformBlockIndex));
+		glBindBuffer(GL_UNIFORM_BUFFER,aMesh.uniformBlockIndex);
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(aMat), (void *)(&aMat), GL_STATIC_DRAW);
+
+		myMeshes.push_back(aMesh);
+	}
 }
 
 void CModelView::DoOpenGLDraw()
@@ -91,15 +319,154 @@ void CModelView::FinishScene()
 
 void CModelView::SetupScene()
 {
-	//glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glViewport(0,0, 1024, 768);
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (!Import3DFromFile(modelname)) 
+	{
+		return;
+	}
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0.f,0.f,10.f,0.f,0.f,-5.f,0.f,1.f,0.f);
+	LoadGLTextures(scene);
+
+	glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC) glutGetProcAddress("glGetUniformBlockIndex");
+	glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC) glutGetProcAddress("glUniformBlockBinding");
+	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC) glutGetProcAddress("glGenVertexArrays");
+	glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)glutGetProcAddress("glBindVertexArray");
+	glBindBufferRange = (PFNGLBINDBUFFERRANGEPROC) glutGetProcAddress("glBindBufferRange");
+	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC) glutGetProcAddress("glDeleteVertexArrays");
+
+	//shaders
+	program = SetupShaders();
+	GenerateVAOsAndUniformBuffer(scene);
+
+	glEnable(GL_DEPTH_TEST);		
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+	//
+	// Uniform Block
+	//
+	glGenBuffers(1,&matricesUniBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, matricesUniBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, MatricesUniBufferSize,NULL,GL_DYNAMIC_DRAW);
+	glBindBufferRange(GL_UNIFORM_BUFFER, matricesUniLoc, matricesUniBuffer, 0, MatricesUniBufferSize);	//setUniforms();
+	glBindBuffer(GL_UNIFORM_BUFFER,0);
+
+	glEnable(GL_MULTISAMPLE);
+
 }
+
+int CModelView::LoadGLTextures(const aiScene* scene)
+{
+	ILboolean success;
+
+	/* initialization of DevIL */
+	ilInit(); 
+
+	/* scan scene's materials for textures */
+	for (unsigned int m=0; m<scene->mNumMaterials; ++m)
+	{
+		int texIndex = 0;
+		aiString path;	// filename
+
+		aiReturn texFound = scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+		while (texFound == AI_SUCCESS) {
+			//fill map with textures, OpenGL image ids set to 0
+			textureIdMap[path.data] = 0; 
+			// more textures?
+			texIndex++;
+			texFound = scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
+		}
+	}
+
+	int numTextures = textureIdMap.size();
+
+	/* create and fill array with DevIL texture ids */
+	ILuint* imageIds = new ILuint[numTextures];
+	ilGenImages(numTextures, imageIds); 
+
+	/* create and fill array with GL texture ids */
+	GLuint* textureIds = new GLuint[numTextures];
+	glGenTextures(numTextures, textureIds); /* Texture name generation */
+
+	/* get iterator */
+	std::map<std::string, GLuint>::iterator itr = textureIdMap.begin();
+	int i=0;
+	for (; itr != textureIdMap.end(); ++i, ++itr)
+	{
+		//save IL image ID
+		std::string filename = (*itr).first;  // get filename
+		(*itr).second = textureIds[i];	  // save texture id for filename in map
+
+		ilBindImage(imageIds[i]); /* Binding of DevIL image name */
+		ilEnable(IL_ORIGIN_SET);
+		ilOriginFunc(IL_ORIGIN_LOWER_LEFT); 
+		success = ilLoadImage((ILstring)filename.c_str());
+
+		if (success) {
+			/* Convert image to RGBA */
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE); 
+
+			/* Create and load textures to OpenGL */
+			glBindTexture(GL_TEXTURE_2D, textureIds[i]); 
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH),
+				ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+				ilGetData()); 
+		}
+		else 
+			printf("Couldn't load Image: %s\n", filename.c_str());
+	}
+	/* Because we have already copied image data into texture data
+	we can release memory used by image. */
+	ilDeleteImages(numTextures, imageIds); 
+
+	//Cleanup
+	delete [] imageIds;
+	delete [] textureIds;
+
+	//return success;
+	return true;
+}
+
+
+
+bool CModelView::Import3DFromFile( const std::string& pFile)
+{
+
+	//check if file exists
+	std::ifstream fin(pFile.c_str());
+	if(!fin.fail()) {
+		fin.close();
+	}
+	else{
+		printf("Couldn't open file: %s\n", pFile.c_str());
+		printf("%s\n", importer.GetErrorString());
+		return false;
+	}
+
+	scene = importer.ReadFile( pFile, aiProcessPreset_TargetRealtime_Quality);
+
+	// If the import failed, report it
+	if( !scene)
+	{
+		printf("%s\n", importer.GetErrorString());
+		return false;
+	}
+
+	// Now we can access the file's contents.
+	printf("Import of scene %s succeeded.",pFile.c_str());
+
+	aiVector3D scene_min, scene_max, scene_center;
+	GetBoundingBox(&scene_min, &scene_max);
+	float tmp;
+	tmp = scene_max.x-scene_min.x;
+	tmp = scene_max.y - scene_min.y > tmp?scene_max.y - scene_min.y:tmp;
+	tmp = scene_max.z - scene_min.z > tmp?scene_max.z - scene_min.z:tmp;
+	scaleFactor = 1.f / tmp;
+
+	// We're done. Everything will be cleaned up by the importer destructor
+	return true;
+}
+
 
 void CModelView::DoOpenGLResize(int nWidth, int nHeight)
 {
@@ -118,9 +485,9 @@ void CModelView::DoOpenGLResize(int nWidth, int nHeight)
 }
 
 
-
-
 // ----------------------------------------------------------------------------
+// Scene loader stuff
+//
 void CModelView::GetBoundingBoxForNode (const aiNode* nd, 
 								aiVector3D* min, 
 								aiVector3D* max, 
@@ -183,206 +550,162 @@ void CModelView::set_float4(float f[4], float a, float b, float c, float d)
 	f[3] = d;
 }
 
-// ----------------------------------------------------------------------------
-void CModelView::apply_material(const aiMaterial *mtl)
+// --------------------------------------------------------
+//
+// Shader Stuff
+//
+
+void CModelView::PrintShaderInfoLog(GLuint obj)
 {
-	float c[4];
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
 
-	GLenum fill_mode;
-	int ret1, ret2;
-	aiColor4D diffuse;
-	aiColor4D specular;
-	aiColor4D ambient;
-	aiColor4D emission;
-	float shininess, strength;
-	int two_sided;
-	int wireframe;
-	unsigned int max;
+	glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
 
-	set_float4(c, 0.8f, 0.8f, 0.8f, 1.0f);
-	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-		color4_to_float4(&diffuse, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, c);
-
-	set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
-	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
-		color4_to_float4(&specular, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
-
-	set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
-	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
-		color4_to_float4(&ambient, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, c);
-
-	set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
-	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
-		color4_to_float4(&emission, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, c);
-
-	max = 1;
-	ret1 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
-	if(ret1 == AI_SUCCESS) {
-    	max = 1;
-    	ret2 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS_STRENGTH, &strength, &max);
-		if(ret2 == AI_SUCCESS)
-			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess * strength);
-        else
-        	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
-    }
-	else {
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.0f);
-		set_float4(c, 0.0f, 0.0f, 0.0f, 0.0f);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
-	}
-
-	max = 1;
-	if(AI_SUCCESS == aiGetMaterialIntegerArray(mtl, AI_MATKEY_ENABLE_WIREFRAME, &wireframe, &max))
-		fill_mode = wireframe ? GL_LINE : GL_FILL;
-	else
-		fill_mode = GL_FILL;
-	glPolygonMode(GL_FRONT_AND_BACK, fill_mode);
-
-	max = 1;
-	if((AI_SUCCESS == aiGetMaterialIntegerArray(mtl, AI_MATKEY_TWOSIDED, &two_sided, &max)) && two_sided)
-		glDisable(GL_CULL_FACE);
-	else 
-		glEnable(GL_CULL_FACE);
-}
-
-// ----------------------------------------------------------------------------
-void CModelView::recursive_render (const aiScene *sc, const aiNode* nd)
-{
-	unsigned int i;
-	unsigned int n = 0, t;
-	aiMatrix4x4 m = nd->mTransformation;
-
-	// update transform
-	aiTransposeMatrix4(&m);
-	glPushMatrix();
-	glMultMatrixf((float*)&m);
-
-	// draw all meshes assigned to this node
-	for (; n < nd->mNumMeshes; ++n) {
-		const aiMesh* mesh = scene->mMeshes[nd->mMeshes[n]];
-
-		apply_material(sc->mMaterials[mesh->mMaterialIndex]);
-
-		if(mesh->mNormals == NULL) {
-			glDisable(GL_LIGHTING);
-		} else {
-			glEnable(GL_LIGHTING);
-		}
-
-		for (t = 0; t < mesh->mNumFaces; ++t) {
-			const aiFace* face = &mesh->mFaces[t];
-			GLenum face_mode;
-
-			switch(face->mNumIndices) {
-				case 1: face_mode = GL_POINTS; break;
-				case 2: face_mode = GL_LINES; break;
-				case 3: face_mode = GL_TRIANGLES; break;
-				default: face_mode = GL_POLYGON; break;
-			}
-
-			glBegin(face_mode);
-
-			for(i = 0; i < face->mNumIndices; i++) {
-				int index = face->mIndices[i];
-				if(mesh->mColors[0] != NULL)
-					glColor4fv((GLfloat*)&mesh->mColors[0][index]);
-				if(mesh->mNormals != NULL) 
-					glNormal3fv(&mesh->mNormals[index].x);
-				glVertex3fv(&mesh->mVertices[index].x);
-			}
-
-			glEnd();
-		}
-
-	}
-
-	// draw all children
-	for (n = 0; n < nd->mNumChildren; ++n) {
-		recursive_render(sc, nd->mChildren[n]);
-	}
-
-	glPopMatrix();
-}
-
-// ----------------------------------------------------------------------------
-void CModelView::do_motion (void)
-{
-	static GLint prev_time = 0;
-	static GLint prev_fps_time = 0;
-	static int frames = 0;
-
-	int time = glutGet(GLUT_ELAPSED_TIME);
-	angle += (time-prev_time)*0.01f;
-	prev_time = time;
-
-	frames += 1;
-	if ((time - prev_fps_time) > 1000) // update every seconds
+    if (infologLength > 0)
     {
-        int current_fps = frames * 1000 / (time - prev_fps_time);
-        printf("%d fps\n", current_fps);
-        frames = 0;
-        prev_fps_time = time;
+        infoLog = (char *)malloc(infologLength);
+        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+		printf("%s\n",infoLog);
+        free(infoLog);
     }
-
-
-	glutPostRedisplay ();
 }
 
 
-// ----------------------------------------------------------------------------
-void CModelView::display(void)
+void CModelView::PrintProgramInfoLog(GLuint obj)
 {
-	glMatrixMode(GL_MODELVIEW);
-	// rotate it around the y axis
-	glRotatef(angle,0.f,1.f,0.f);
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
 
-	// scale the whole asset to fit into our view frustum 
-	float tmp = scene_max.x-scene_min.x;
-	tmp = aisgl_max(scene_max.y - scene_min.y,tmp);
-	tmp = aisgl_max(scene_max.z - scene_min.z,tmp);
-	tmp = 1.0f / tmp;
-	glScalef(tmp, tmp, tmp);
+	glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
 
-        // center the model
-	glTranslatef( -scene_center.x, -scene_center.y, -scene_center.z );
+    if (infologLength > 0)
+    {
+        infoLog = (char *)malloc(infologLength);
+        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
+		printf("%s\n",infoLog);
+        free(infoLog);
+    }
+}
 
-        // if the display list has not been made yet, create a new one and
-        // fill it with scene contents
-	if(scene_list == 0) {
-	    scene_list = glGenLists(1);
-	    glNewList(scene_list, GL_COMPILE);
-            // now begin at the root node of the imported data and traverse
-            // the scenegraph by multiplying subsequent local transforms
-            // together on GL's matrix stack.
-	    recursive_render(scene, scene->mRootNode);
-	    glEndList();
-	}
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+GLuint CModelView::SetupShaders() {
+
+	char *vs = NULL,*fs = NULL,*fs2 = NULL;
+
+	GLuint p,v,f;
+
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
+
+	vs = TextFileRead(vertexFileName);
+	fs = TextFileRead(fragmentFileName);
+
+	const char * vv = vs;
+	const char * ff = fs;
+
+	glShaderSource(v, 1, &vv,NULL);
+	glShaderSource(f, 1, &ff,NULL);
+
+	free(vs);free(fs);
+
+	glCompileShader(v);
+	glCompileShader(f);
+
+	PrintShaderInfoLog(v);
+	PrintShaderInfoLog(f);
+
+	p = glCreateProgram();
+	glAttachShader(p,v);
+	glAttachShader(p,f);
+
+	glBindFragDataLocation(p, 0, "output");
+
+	glBindAttribLocation(p,vertexLoc,"position");
+	glBindAttribLocation(p,normalLoc,"normal");
+	glBindAttribLocation(p,texCoordLoc,"texCoord");
+
+	glLinkProgram(p);
+	glValidateProgram(p);
+	PrintProgramInfoLog(p);
+
+	program = p;
+	vertexShader = v;
+	fragmentShader = f;
 	
-	glCallList(scene_list);
+	GLuint k = glGetUniformBlockIndex(p,"Matrices");
+	glUniformBlockBinding(p, k, matricesUniLoc);
+	glUniformBlockBinding(p, glGetUniformBlockIndex(p,"Material"), materialUniLoc);
 
-	/*glFlush();
+	texUnit = glGetUniformLocation(p,"texUnit");
 
-	do_motion();*/
+	return(p);
 }
+
+char *CModelView::TextFileRead(char *fn) {
+
+
+	FILE *fp;
+	char *content = NULL;
+
+	int count=0;
+
+	if (fn != NULL) {
+		fopen_s(&fp, fn,"rt");
+
+		if (fp != NULL) {
+      
+      fseek(fp, 0, SEEK_END);
+      count = ftell(fp);
+      rewind(fp);
+
+			if (count > 0) {
+				content = (char *)malloc(sizeof(char) * (count+1));
+				count = fread(content,sizeof(char),count,fp);
+				content[count] = '\0';
+			}
+			fclose(fp);
+		}
+	}
+	return content;
+}
+
+int CModelView::TextFileWrite(char *fn, char *s) {
+
+	FILE *fp;
+	int status = 0;
+
+	if (fn != NULL) {
+		fopen_s(&fp, fn,"w");
+		if (fp != NULL) {
+			
+			if (fwrite(s,sizeof(char),strlen(s),fp) == strlen(s))
+				status = 1;
+			fclose(fp);
+		}
+	}
+	return(status);
+}
+
+
+void CModelView::SetupLog()
+{
+	aiLogStream stream;
+	// get a handle to the predefined STDOUT log stream and attach
+	// it to the logging system. It remains active for all further
+	// calls to aiImportFile(Ex) and aiApplyPostProcessing.
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
+	aiAttachLogStream(&stream);
+
+	// ... same procedure, but this stream now writes the
+	// log messages to assimp_log.txt
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_FILE,"assimp_log.txt");
+	aiAttachLogStream(&stream);
+
+}
+
 
 // ----------------------------------------------------------------------------
-int CModelView::LoadAsset(const char* path)
-{
-	// we are taking one of the postprocessing presets to avoid
-	// spelling out 20+ single postprocessing flags here.
-	scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
 
-	if (scene) {
-		GetBoundingBox(&scene_min,&scene_max);
-		scene_center.x = (scene_min.x + scene_max.x) / 2.0f;
-		scene_center.y = (scene_min.y + scene_max.y) / 2.0f;
-		scene_center.z = (scene_min.z + scene_max.z) / 2.0f;
-		return 0;
-	}
-	return 1;
-}

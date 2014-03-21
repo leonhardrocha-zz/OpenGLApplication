@@ -1,5 +1,4 @@
-#include "stdafx.h"
-#include "openglqtapp.h"
+#include "OpenGLQtApp.h"
 
 OpenGLQtApp::OpenGLQtApp(QWidget *parent)
 	: QMainWindow(parent)
