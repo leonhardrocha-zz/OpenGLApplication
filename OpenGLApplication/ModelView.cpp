@@ -15,7 +15,6 @@
 
 #include "ModelView.h"
 
-
 //-----------------------CUT----------------------------------------------
 
 // the global Assimp scene object
@@ -77,13 +76,10 @@ CModelView::CModelView()
 	vertexFileName = "dirlightdiffambpix.vert";
 	fragmentFileName = "dirlightdiffambpix.frag";
 	timebase =0; frame=0;
-	SetupScene();
 }
 
 CModelView::~CModelView()
 {
-	FinishScene();
-	
 	// We added a log stream to the library, it's our job to disable it
 	// again. This will definitely release the last resources allocated
 	// by Assimp.
@@ -112,7 +108,7 @@ void CModelView::RecursiveRender (const aiScene *sc, const aiNode* nd)
 	// draw all meshes assigned to this node
 	for (unsigned int n=0; n < nd->mNumMeshes; ++n){
 		// bind material uniform
-		glBindBufferRange(GL_UNIFORM_BUFFER, materialUniLoc, myMeshes[nd->mMeshes[n]].uniformBlockIndex, 0, sizeof(struct MyMaterial));	
+		/*glBindBufferRange(GL_UNIFORM_BUFFER, materialUniLoc, myMeshes[nd->mMeshes[n]].uniformBlockIndex, 0, sizeof(struct MyMaterial));	*/
 		// bind texture
 		glBindTexture(GL_TEXTURE_2D, myMeshes[nd->mMeshes[n]].texIndex);
 		// bind VAO
@@ -129,7 +125,6 @@ void CModelView::RecursiveRender (const aiScene *sc, const aiNode* nd)
 
 	glPopMatrix();
 }
-
 
 // Rendering Callback Function
 
@@ -153,7 +148,7 @@ void CModelView::RenderScene(void) {
 	glRotatef(step, 0.0f, 1.0f, 0.0f);
 	
 	// use our shader
-	glUseProgram(program);
+	//glUseProgram(program);
 
 	// we are only going to use texture unit 0
 	// unfortunately samplers can't reside in uniform blocks
@@ -169,7 +164,7 @@ void CModelView::RenderScene(void) {
 		sprintf_s (fpsBuffer,"FPS:%4.2f", frame*1000.0/(time-timebase));
 		timebase = time;
 		frame = 0;
-		glutSetWindowTitle(fpsBuffer);
+		//glutSetWindowTitle(fpsBuffer);
 	}
 
 	// swap buffers
@@ -253,51 +248,51 @@ void CModelView::GenerateVAOsAndUniformBuffer(const aiScene *sc) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	
 		// create material uniform buffer
-		aiMaterial *mtl = sc->mMaterials[mesh->mMaterialIndex];
-			
-		aiString texPath;	//contains filename of texture
-		if(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &texPath)){
-				//bind texture
-				unsigned int texId = textureIdMap[texPath.data];
-				aMesh.texIndex = texId;
-				aMat.texCount = 1;
-			}
-		else
-			aMat.texCount = 0;
+		//aiMaterial *mtl = sc->mMaterials[mesh->mMaterialIndex];
+		//	
+		//aiString texPath;	//contains filename of texture
+		//if(AI_SUCCESS == mtl->GetTexture(aiTextureType_DIFFUSE, 0, &texPath)){
+		//		//bind texture
+		//		unsigned int texId = textureIdMap[texPath.data];
+		//		aMesh.texIndex = texId;
+		//		aMat.texCount = 1;
+		//	}
+		//else
+		//	aMat.texCount = 0;
 
-		float c[4];
-		set_float4(c, 0.8f, 0.8f, 0.8f, 1.0f);
-		aiColor4D diffuse;
-		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-			color4_to_float4(&diffuse, c);
-		memcpy(aMat.diffuse, c, sizeof(c));
+		//float c[4];
+		//set_float4(c, 0.8f, 0.8f, 0.8f, 1.0f);
+		//aiColor4D diffuse;
+		//if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+		//	color4_to_float4(&diffuse, c);
+		//memcpy(aMat.diffuse, c, sizeof(c));
 
-		set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
-		aiColor4D ambient;
-		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
-			color4_to_float4(&ambient, c);
-		memcpy(aMat.ambient, c, sizeof(c));
+		//set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
+		//aiColor4D ambient;
+		//if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
+		//	color4_to_float4(&ambient, c);
+		//memcpy(aMat.ambient, c, sizeof(c));
 
-		set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
-		aiColor4D specular;
-		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
-			color4_to_float4(&specular, c);
-		memcpy(aMat.specular, c, sizeof(c));
+		//set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+		//aiColor4D specular;
+		//if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
+		//	color4_to_float4(&specular, c);
+		//memcpy(aMat.specular, c, sizeof(c));
 
-		set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
-		aiColor4D emission;
-		if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
-			color4_to_float4(&emission, c);
-		memcpy(aMat.emissive, c, sizeof(c));
+		//set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+		//aiColor4D emission;
+		//if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
+		//	color4_to_float4(&emission, c);
+		//memcpy(aMat.emissive, c, sizeof(c));
 
-		float shininess = 0.0;
-		unsigned int max;
-		aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
-		aMat.shininess = shininess;
+		//float shininess = 0.0;
+		//unsigned int max;
+		//aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
+		//aMat.shininess = shininess;
 
-		glGenBuffers(1,&(aMesh.uniformBlockIndex));
-		glBindBuffer(GL_UNIFORM_BUFFER,aMesh.uniformBlockIndex);
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(aMat), (void *)(&aMat), GL_STATIC_DRAW);
+		//glGenBuffers(1,&(aMesh.uniformBlockIndex));
+		//glBindBuffer(GL_UNIFORM_BUFFER,aMesh.uniformBlockIndex);
+		//glBufferData(GL_UNIFORM_BUFFER, sizeof(aMat), (void *)(&aMat), GL_STATIC_DRAW);
 
 		myMeshes.push_back(aMesh);
 	}
@@ -318,22 +313,24 @@ void CModelView::FinishScene()
 
 void CModelView::SetupScene()
 {
+	glewInit();
 	if (!Import3DFromFile(modelname)) 
 	{
 		return;
 	}
-
+		
 	LoadGLTextures(scene);
-
+	
+	//not supported OGL 2.1
+	/*glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC) glutGetProcAddress("glGetUniformBlockIndex");
 	glGetUniformBlockIndex = (PFNGLGETUNIFORMBLOCKINDEXPROC) glutGetProcAddress("glGetUniformBlockIndex");
-	glUniformBlockBinding = (PFNGLUNIFORMBLOCKBINDINGPROC) glutGetProcAddress("glUniformBlockBinding");
 	glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC) glutGetProcAddress("glGenVertexArrays");
 	glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC)glutGetProcAddress("glBindVertexArray");
 	glBindBufferRange = (PFNGLBINDBUFFERRANGEPROC) glutGetProcAddress("glBindBufferRange");
-	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC) glutGetProcAddress("glDeleteVertexArrays");
+	glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC) glutGetProcAddress("glDeleteVertexArrays");*/
 
 	//shaders
-	program = SetupShaders();
+	//program = SetupShaders();
 	GenerateVAOsAndUniformBuffer(scene);
 
 	glEnable(GL_DEPTH_TEST);		
@@ -342,11 +339,11 @@ void CModelView::SetupScene()
 	//
 	// Uniform Block
 	//
-	glGenBuffers(1,&matricesUniBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, matricesUniBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, MatricesUniBufferSize,NULL,GL_DYNAMIC_DRAW);
-	glBindBufferRange(GL_UNIFORM_BUFFER, matricesUniLoc, matricesUniBuffer, 0, MatricesUniBufferSize);	//setUniforms();
-	glBindBuffer(GL_UNIFORM_BUFFER,0);
+	//glGenBuffers(1,&matricesUniBuffer);
+	//glBindBuffer(GL_UNIFORM_BUFFER, matricesUniBuffer);
+	//glBufferData(GL_UNIFORM_BUFFER, MatricesUniBufferSize,NULL,GL_DYNAMIC_DRAW);
+	//glBindBufferRange(GL_UNIFORM_BUFFER, matricesUniLoc, matricesUniBuffer, 0, MatricesUniBufferSize);	//setUniforms();
+	//glBindBuffer(GL_UNIFORM_BUFFER,0);
 
 	glEnable(GL_MULTISAMPLE);
 

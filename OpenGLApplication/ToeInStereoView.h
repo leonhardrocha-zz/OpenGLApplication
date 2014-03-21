@@ -1,13 +1,22 @@
 #ifndef _TOEIN_STEREO_VIEW_H_
 #define _TOEIN_STEREO_VIEW_H_
 
-
-#include "ModelView.h"
+#include <vector>
+#include <map>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fstream>
+#include <IL/il.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/freeglut.h>
 #include "BaseStereoView.h"
 
 // CToeInStereoView window
 
-class CToeInStereoView : public CModelView, CBaseStereoView
+class CToeInStereoView : public CBaseStereoView
 {
 
 public:

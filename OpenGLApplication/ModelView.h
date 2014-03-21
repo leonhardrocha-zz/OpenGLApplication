@@ -34,12 +34,11 @@ public:
 
 // Operations
 public:
-// Overrides
-protected:
-	//	Main OpenGL functions.
 	virtual void SetupScene();
 	virtual void RenderScene();
 	virtual void FinishScene();
+protected:
+	//	Main OpenGL functions.
 	virtual bool Import3DFromFile( const std::string& pFile);
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);

@@ -8,6 +8,6 @@
 //	Entry point for OpenGLHelper library
 #include "BaseStereoView.h"
 #include "ToeInStereoView.h"
-#include "ModelView.h"
+#include "AssetReader.h"
 
 #endif

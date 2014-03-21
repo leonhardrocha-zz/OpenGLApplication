@@ -115,12 +115,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ModelView.cpp" />
+    <ClCompile Include="AssetReader.cpp" />
     <ClCompile Include="ToeInStereoView.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetReader.h" />
     <ClInclude Include="BaseStereoView.h" />
-    <ClInclude Include="ModelView.h" />
     <ClInclude Include="OpenGLHelper.h" />
     <ClInclude Include="ToeInStereoView.h" />
   </ItemGroup>

@@ -18,7 +18,7 @@
     <ClCompile Include="ToeInStereoView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModelView.cpp">
+    <ClCompile Include="AssetReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +29,10 @@
     <ClInclude Include="ToeInStereoView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelView.h">
+    <ClInclude Include="OpenGLHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGLHelper.h">
+    <ClInclude Include="AssetReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
