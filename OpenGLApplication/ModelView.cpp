@@ -14,10 +14,7 @@
 //
 
 #include "ModelView.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-#include <fstream>
+
 
 //-----------------------CUT----------------------------------------------
 
@@ -77,6 +74,8 @@ CModelView::CModelView()
 	//always be texture unit 0
 	texUnit=0;
 	modelname = "C:\\Users\\UDESC\\Documents\\GitHub\\OpenGLApplication\\Mickey Mouse\\Mickey Mouse.obj";
+	vertexFileName = "dirlightdiffambpix.vert";
+	fragmentFileName = "dirlightdiffambpix.frag";
 	timebase =0; frame=0;
 	SetupScene();
 }
@@ -600,8 +599,8 @@ GLuint CModelView::SetupShaders() {
 	v = glCreateShader(GL_VERTEX_SHADER);
 	f = glCreateShader(GL_FRAGMENT_SHADER);
 
-	vs = TextFileRead(vertexFileName);
-	fs = TextFileRead(fragmentFileName);
+	vs = TextFileRead(vertexFileName.c_str());
+	fs = TextFileRead(fragmentFileName.c_str());
 
 	const char * vv = vs;
 	const char * ff = fs;
@@ -644,7 +643,7 @@ GLuint CModelView::SetupShaders() {
 	return(p);
 }
 
-char *CModelView::TextFileRead(char *fn) {
+char *CModelView::TextFileRead(const char *filename) {
 
 
 	FILE *fp;
@@ -652,8 +651,8 @@ char *CModelView::TextFileRead(char *fn) {
 
 	int count=0;
 
-	if (fn != NULL) {
-		fopen_s(&fp, fn,"rt");
+	if (filename != NULL) {
+		fopen_s(&fp, filename,"rt");
 
 		if (fp != NULL) {
       
@@ -672,13 +671,13 @@ char *CModelView::TextFileRead(char *fn) {
 	return content;
 }
 
-int CModelView::TextFileWrite(char *fn, char *s) {
+int CModelView::TextFileWrite(const char *filename, char *s) {
 
 	FILE *fp;
 	int status = 0;
 
-	if (fn != NULL) {
-		fopen_s(&fp, fn,"w");
+	if (filename != NULL) {
+		fopen_s(&fp, filename,"w");
 		if (fp != NULL) {
 			
 			if (fwrite(s,sizeof(char),strlen(s),fp) == strlen(s))

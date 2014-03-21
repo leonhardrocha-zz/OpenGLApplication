@@ -4,13 +4,17 @@
 
 #include <vector>
 #include <map>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fstream>
 #include <IL/il.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
-// assimp include files. These three are usually needed.
 
+// assimp include files. These three are usually needed.
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -36,7 +40,6 @@ protected:
 	virtual void SetupScene();
 	virtual void RenderScene();
 	virtual void FinishScene();
-	virtual int LoadAsset (const char* path);
 	virtual bool Import3DFromFile( const std::string& pFile);
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
@@ -73,8 +76,8 @@ private:
 	GLuint program, vertexShader, fragmentShader;
 
 	// Shader Names
-	char *vertexFileName;// = "dirlightdiffambpix.vert";
-	char *fragmentFileName;// = "dirlightdiffambpix.frag";
+	std::string vertexFileName;// = "dirlightdiffambpix.vert";
+	std::string fragmentFileName;// = "dirlightdiffambpix.frag";
 
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -91,7 +94,7 @@ private:
 	std::map<std::string, GLuint> textureIdMap;	
 
 	// Replace the model name by your model's filename
-	static std::string modelname;// = "../Mickey Mouse/Mickey Mouse.obj";
+	std::string modelname;// = "../Mickey Mouse/Mickey Mouse.obj";
 
 	// Camera Position
 	float camX, camY, camZ;
@@ -125,8 +128,8 @@ private:
 	void PrintShaderInfoLog(GLuint obj);
 	void PrintProgramInfoLog(GLuint obj);
 	GLuint CModelView::SetupShaders();
-	char *TextFileRead(char *fn);
-	int TextFileWrite(char *fn, char *s);
+	char *TextFileRead(const char *filename);
+	int TextFileWrite(const char *filename, char *s);
 };
 
 #endif

@@ -17,7 +17,7 @@ private:
     GLuint m_posAttr;
     GLuint m_colAttr;
     GLuint m_matrixUniform;
-
+	CModelView modelView;
     QOpenGLShaderProgram *m_program;
     int m_frame;
 };

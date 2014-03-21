@@ -1,6 +1,9 @@
 #ifndef _OPENGGL_HELPER_H_
 #define _OPENGGL_HELPER_H_
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 //	Entry point for OpenGLHelper library
 #include "BaseStereoView.h"
