@@ -71,12 +71,18 @@
     <ClCompile Include="ModelWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TriangleWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_openglqtapp.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

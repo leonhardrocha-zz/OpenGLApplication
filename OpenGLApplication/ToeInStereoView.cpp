@@ -6,13 +6,9 @@
 #define new DEBUG_NEW
 #endif
 
-
 CToeInStereoView::CToeInStereoView()
 {
-	SetupView();
-	SetupScene();
 }
-
 
 void CToeInStereoView::SetupView()
 {
@@ -95,6 +91,11 @@ void CToeInStereoView::RenderRightView()
 			0.0,                                           //set camera up vector x=0.0
 			1.0,                                           //                     y=1.0
 			0.0);                                          //                     z=0.0
+
+	float modelview[16];
+	float projection[16];
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelview);
+	glGetFloatv(GL_PROJECTION_MATRIX, projection);
 
 	glPushMatrix();
 	{

@@ -110,10 +110,12 @@
     <ClCompile Include="ModelWindow.cpp" />
     <ClCompile Include="OpenGLQtApp.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
+    <ClCompile Include="TriangleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_openglqtapp.h" />
     <ClInclude Include="ModelWindow.h" />
+    <ClInclude Include="TriangleWindow.h" />
     <CustomBuild Include="OpenGLWindow.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing OpenGLWindow.h...</Message>

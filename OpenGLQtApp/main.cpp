@@ -1,5 +1,5 @@
 #include "OpenGLQtApp.h"
-#include "OpenGLWindow.h"
+#include "TriangleWindow.h"
 
 #include <QtWidgets/QApplication>
 
@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     QSurfaceFormat format;
     format.setSamples(4);
 
-    OpenGLWindow window;
+    TriangleWindow window;
     window.setFormat(format);
     window.resize(640, 480);
     window.show();

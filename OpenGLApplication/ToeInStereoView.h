@@ -23,11 +23,9 @@ public:
 	//	Constructor / Destructor.
 	CToeInStereoView();
 	virtual ~CToeInStereoView() {};
-
-
+	virtual void SetupView();
 // Overrides
 protected:
-	virtual void SetupView();
 	//	Main OpenGL functions.
 	virtual void SetupScene();
 	virtual void RenderScene();
