@@ -21,16 +21,16 @@ void ToeInStereoView::SetupView()
 
 	fovy = 45;                                          //field of view in y-axis
 	aspect = double(windowWidth)/double(windowHeight);		//screen aspect ratio
-	nearZ = 3.0;                                        //near clipping plane
-	farZ = 30.0;                                        //far clipping plane
-	IOD = 0.5;
-
+	nearZ = 0.1;                                        //near clipping plane
+	farZ = 10.0;                                        //far clipping plane
+	IOD = 0.1;
+	
 	CameraPosition[0] = 0;
 	CameraPosition[1] = 0;
-	CameraPosition[2] = 0;
+	CameraPosition[2] = 1;
 	LookAtPosition[0] = 0;
 	LookAtPosition[1] = 0;
-	LookAtPosition[2] = 5;
+	LookAtPosition[2] = -1;
 	LightPosition[0] = 0;
 	LightPosition[1] = 0;
 	LightPosition[2] = 0;

@@ -34,16 +34,16 @@ void StereoView::SetupView()
 
 	fovy = 45;                                          //field of view in y-axis
 	aspect = double(windowWidth)/double(windowHeight);		//screen aspect ratio
-	nearZ = 3.0;                                        //near clipping plane
-	farZ = 30.0;                                        //far clipping plane
-	IOD = 0.5;
+	nearZ = 0.1;                                        //near clipping plane
+	farZ = 10.0;                                        //far clipping plane
+	IOD = 0.1;
 	
 	CameraPosition[0] = 0;
 	CameraPosition[1] = 0;
-	CameraPosition[2] = 0;
+	CameraPosition[2] = 1;
 	LookAtPosition[0] = 0;
 	LookAtPosition[1] = 0;
-	LookAtPosition[2] = 5;
+	LookAtPosition[2] = -1;
 	LightPosition[0] = 0;
 	LightPosition[1] = 0;
 	LightPosition[2] = 0;
@@ -97,8 +97,8 @@ void StereoView::RenderLeftView()
 	glFrustum(leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
             leftCam.bottomfrustum, leftCam.topfrustum,
             nearZ, farZ);
-	glTranslatef(leftCam.modeltranslation, 0, 0);        //translate to cancel parallax
-
+	//translate to cancel parallax
+	glTranslatef(leftCam.modeltranslation - CameraPosition[0], -CameraPosition[1], -CameraPosition[2]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
 	glPushMatrix();
@@ -120,8 +120,8 @@ void StereoView::RenderRightView()
 	glFrustum(rightCam.leftfrustum, rightCam.rightfrustum,     //set left view frustum
             rightCam.bottomfrustum, rightCam.topfrustum,
             nearZ, farZ);
-	glTranslatef(rightCam.modeltranslation, 0, 0);        //translate to cancel parallax
-
+	//translate to cancel parallax
+	glTranslatef(rightCam.modeltranslation - CameraPosition[0], -CameraPosition[1], -CameraPosition[2]);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
 	glPushMatrix();
