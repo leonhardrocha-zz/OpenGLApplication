@@ -1,7 +1,7 @@
 #ifndef _BASE_STEREO_VIEW_H_
 #define _BASE_STEREO_VIEW_H_
 
-class CBaseStereoView
+class BaseStereoView
 {
 
 public:
@@ -30,6 +30,9 @@ protected:
 	double nearZ;                                        //near clipping plane
 	double farZ;                                        //far clipping plane
 	double IOD;
+	float CameraPosition[3];
+	float LookAtPosition[3];
+	float LightPosition[3];
 };
 
 #endif

@@ -7,6 +7,7 @@
 
 //	Entry point for OpenGLHelper library
 #include "BaseStereoView.h"
+#include "StereoView.h"
 #include "ToeInStereoView.h"
 #include "AssetReader.h"
 #include "BaseAssetRenderer.h"

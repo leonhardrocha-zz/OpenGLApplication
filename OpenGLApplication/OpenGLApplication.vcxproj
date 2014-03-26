@@ -118,6 +118,7 @@
     <ClCompile Include="AssetReader.cpp" />
     <ClCompile Include="OpenGL21Renderer.cpp" />
     <ClCompile Include="OpenGLHelper.cpp" />
+    <ClCompile Include="StereoView.cpp" />
     <ClCompile Include="ToeInStereoView.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="BaseStereoView.h" />
     <ClInclude Include="OpenGL21Renderer.h" />
     <ClInclude Include="OpenGLHelper.h" />
+    <ClInclude Include="StereoView.h" />
     <ClInclude Include="ToeInStereoView.h" />
   </ItemGroup>
   <ItemGroup>

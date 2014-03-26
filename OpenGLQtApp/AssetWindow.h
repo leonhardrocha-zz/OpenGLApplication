@@ -1,7 +1,7 @@
 #include "../OpenGLApplication/OpenGLHelper.h"
 #include "OpenGLWindow.h"
 
-class AssetWindow : public OpenGLWindow, CToeInStereoView
+class AssetWindow : public OpenGLWindow, ToeInStereoView
 {
 public:
     AssetWindow();

@@ -1,5 +1,5 @@
-#ifndef _TOEIN_STEREO_VIEW_H_
-#define _TOEIN_STEREO_VIEW_H_
+#ifndef _STEREO_VIEW_H_
+#define _STEREO_VIEW_H_
 
 #include "BaseStereoView.h"
 #include <vector>
@@ -14,15 +14,15 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 
-// ToeInStereoView window
+// StereoView window
 
-class ToeInStereoView : public BaseStereoView
+class StereoView : public BaseStereoView
 {
 
 public:
 	//	Constructor / Destructor.
-	ToeInStereoView();
-	virtual ~ToeInStereoView() {};
+	StereoView();
+	virtual ~StereoView() {};
 // Overrides
 protected:
 	//	Main OpenGL functions.

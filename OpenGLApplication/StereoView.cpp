@@ -1,12 +1,25 @@
-// ToeInStereoView.cpp : implementation of the ToeInStereoView class
+// ToeInStereoView.cpp : implementation of the StereoView class
 //
-#include "ToeInStereoView.h"
+#include "StereoView.h"
 
-ToeInStereoView::ToeInStereoView()
+#define DTR 0.0174532925
+
+struct camera
+{
+    GLdouble leftfrustum;
+    GLdouble rightfrustum;
+    GLdouble bottomfrustum;
+    GLdouble topfrustum;
+    GLfloat modeltranslation;
+} leftCam, rightCam;
+
+
+StereoView::StereoView()
 {
 }
 
-void ToeInStereoView::SetupWindow()
+
+void StereoView::SetupWindow()
 {
 	windowWidth = 1024;
 	windowHeight = 768;
@@ -15,7 +28,7 @@ void ToeInStereoView::SetupWindow()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void ToeInStereoView::SetupView()
+void StereoView::SetupView()
 {
 	SetupWindow();
 
@@ -24,7 +37,7 @@ void ToeInStereoView::SetupView()
 	nearZ = 3.0;                                        //near clipping plane
 	farZ = 30.0;                                        //far clipping plane
 	IOD = 0.5;
-
+	
 	CameraPosition[0] = 0;
 	CameraPosition[1] = 0;
 	CameraPosition[2] = 0;
@@ -35,14 +48,30 @@ void ToeInStereoView::SetupView()
 	LightPosition[1] = 0;
 	LightPosition[2] = 0;
 
+	double top = nearZ*tan(DTR*fovy/2);                    //sets top of frustum based on fovy and near clipping plane
+    double right = aspect*top;                             //sets right of frustum based on aspect ratio
+    double frustumshift = (IOD/2)*nearZ/LookAtPosition[2];
+
+    leftCam.topfrustum = top;
+    leftCam.bottomfrustum = -top;
+    leftCam.leftfrustum = -right + frustumshift;
+    leftCam.rightfrustum = right + frustumshift;
+    leftCam.modeltranslation = IOD/2;
+
+    rightCam.topfrustum = top;
+    rightCam.bottomfrustum = -top;
+    rightCam.leftfrustum = -right - frustumshift;
+    rightCam.rightfrustum = right - frustumshift;
+    rightCam.modeltranslation = -IOD/2;
+
 	glDrawBuffer(GL_BACK);                                   //draw into both back buffers
 	glViewport (0, 0, windowWidth, windowHeight);				 //sets drawing viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
+//	gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
 }
 
-void ToeInStereoView::SetupScene()
+void StereoView::SetupScene()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();	
@@ -58,23 +87,20 @@ void ToeInStereoView::SetupScene()
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
-void ToeInStereoView::RenderLeftView()
+void StereoView::RenderLeftView()
 {
 	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
 	glViewport (0, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset projection matrix
+	glFrustum(leftCam.leftfrustum, leftCam.rightfrustum,     //set left view frustum
+            leftCam.bottomfrustum, leftCam.topfrustum,
+            nearZ, farZ);
+	glTranslatef(leftCam.modeltranslation, 0, 0);        //translate to cancel parallax
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
-
-	gluLookAt(CameraPosition[0]-IOD/2,                                      //set camera position  x=-IOD/2	
-			CameraPosition[1],                                           //                     y=0.0
-			CameraPosition[2],                                           //                     z=0.0
-			LookAtPosition[0],                                           //set camera "look at" x=0.0
-			LookAtPosition[1],                                           //                     y=0.0
-			LookAtPosition[2],                                       //                     z=screenplane
-			0.0,                                           //set camera up vector x=0.0
-			1.0,                                           //                     y=1.0
-			0.0);                                          //                     z=0.0
-  
 	glPushMatrix();
 	{
 		glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
@@ -84,23 +110,20 @@ void ToeInStereoView::RenderLeftView()
 	glPopMatrix();
 }
 
-void ToeInStereoView::RenderRightView()
+void StereoView::RenderRightView()
 {
 	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
 	glViewport (windowWidth/2-1, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();                                        //reset projection matrix
+	glFrustum(rightCam.leftfrustum, rightCam.rightfrustum,     //set left view frustum
+            rightCam.bottomfrustum, rightCam.topfrustum,
+            nearZ, farZ);
+	glTranslatef(rightCam.modeltranslation, 0, 0);        //translate to cancel parallax
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
-
-	gluLookAt(CameraPosition[0]+IOD/2,									   //set camera position  x=+IOD/2
-			CameraPosition[1],                                           //                     y=0.0
-			CameraPosition[2],                                           //                     z=0.0
-			LookAtPosition[0],                                           //set camera "look at" x=0.0
-			LookAtPosition[1],                                           //                     y=0.0
-			LookAtPosition[2],                                       //                     z=screenplane
-			0.0,                                           //set camera up vector x=0.0
-			1.0,                                           //                     y=1.0
-			0.0);                                          //                     z=0.0
-
 	glPushMatrix();
 	{
 		glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
@@ -111,7 +134,7 @@ void ToeInStereoView::RenderRightView()
 }
 
 
-void ToeInStereoView::RenderStereoView()							//toed-in stereo
+void StereoView::RenderStereoView()							//toed-in stereo
 {
 	RenderLeftView();
 	
@@ -119,12 +142,12 @@ void ToeInStereoView::RenderStereoView()							//toed-in stereo
 }
 
 
-void ToeInStereoView::DoOpenGLDraw()
+void StereoView::DoOpenGLDraw()
 {
 	RenderStereoView();
 }
 
-void  ToeInStereoView::RenderScene()
+void  StereoView::RenderScene()
 {
 	//Put render implementation on derived class
 
@@ -160,7 +183,7 @@ void  ToeInStereoView::RenderScene()
 
 }
 
-void ToeInStereoView::DoOpenGLResize(int nWidth, int nHeight)
+void StereoView::DoOpenGLResize(int nWidth, int nHeight)
 {
 	//	Create the viewport.
 	glViewport(0, 0, nWidth, nHeight);
