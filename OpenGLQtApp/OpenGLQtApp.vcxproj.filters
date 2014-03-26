@@ -71,7 +71,7 @@
     <ClCompile Include="ModelWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TriangleWindow.cpp">
+    <ClCompile Include="AssetWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,7 +82,7 @@
     <ClInclude Include="ModelWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TriangleWindow.h">
+    <ClInclude Include="AssetWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

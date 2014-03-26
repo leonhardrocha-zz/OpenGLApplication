@@ -1,6 +1,7 @@
 #ifndef _TOEIN_STEREO_VIEW_H_
 #define _TOEIN_STEREO_VIEW_H_
 
+#include "BaseStereoView.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -12,7 +13,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
-#include "BaseStereoView.h"
 
 // CToeInStereoView window
 
@@ -23,10 +23,11 @@ public:
 	//	Constructor / Destructor.
 	CToeInStereoView();
 	virtual ~CToeInStereoView() {};
-	virtual void SetupView();
 // Overrides
 protected:
 	//	Main OpenGL functions.
+	virtual void SetupView();
+	virtual void SetupWindow();
 	virtual void SetupScene();
 	virtual void RenderScene();
 	virtual void RenderStereoView();
@@ -35,6 +36,9 @@ protected:
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
 protected:
+	float CameraPosition[3];
+	float LookAtPosition[3];
+	float LightPosition[3];
 };
 
 #endif

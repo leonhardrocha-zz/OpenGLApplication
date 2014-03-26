@@ -9,5 +9,11 @@
 #include "BaseStereoView.h"
 #include "ToeInStereoView.h"
 #include "AssetReader.h"
+#include "BaseAssetRenderer.h"
+#include "OpenGL21Renderer.h"
+
+#define printOpenGLError() OpenGLHelper::PrintOglError(__FILE__, __LINE__)
+
+int PrintOglError(char *file, int line);
 
 #endif

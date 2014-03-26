@@ -10,66 +10,80 @@ CToeInStereoView::CToeInStereoView()
 {
 }
 
+
+void CToeInStereoView::SetupWindow()
+{
+	windowWidth = 1024;
+	windowHeight = 768;
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 void CToeInStereoView::SetupView()
 {
-	depthZ = 10.0f;                                     //depth of the object drawing
+	SetupWindow();
+
 	fovy = 45;                                          //field of view in y-axis
-	viewWidth = 1024;
-	viewHeight = 512;
-	aspect = double(viewWidth)/double(viewHeight);		//screen aspect ratio
+	aspect = double(windowWidth)/double(windowHeight);		//screen aspect ratio
 	nearZ = 3.0;                                        //near clipping plane
 	farZ = 30.0;                                        //far clipping plane
-	screenZ = 10.0;                                     //screen projection plane
 	IOD = 0.5;
+
+	CameraPosition[0] = 0;
+	CameraPosition[1] = 0;
+	CameraPosition[2] = 5;
+	LookAtPosition[0] = 0;
+	LookAtPosition[1] = 0;
+	LookAtPosition[2] = 0;
+	LightPosition[0] = 0;
+	LightPosition[1] = 0;
+	LightPosition[2] = 0;
+
+	glDrawBuffer(GL_BACK);                                   //draw into both back buffers
+	glViewport (0, 0, windowWidth, windowHeight);				 //sets drawing viewport
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
 }
 
 void CToeInStereoView::SetupScene()
 {
-	//	Clear the buffers.
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//	Set up some nice attributes for drawing the grid.
-	glPushAttrib(GL_LINE_BIT | GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDisable(GL_LIGHTING);
-	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	glLineWidth(1.5f);
-	glPopAttrib();
-
-	glViewport (0, 0, viewWidth, viewHeight);				 //sets drawing viewport
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(fovy, aspect, nearZ, farZ);               //sets frustum using gluPerspective
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-		
-	glDrawBuffer(GL_BACK);                                   //draw into both back buffers
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);      //clear color and depth buffers
+	glLoadIdentity();	
+
+	float lightDif[3] = {0.8f, 0.8f, 0.8f};
+	float lightAmb[3] = {0.1f, 0.1f, 0.1f};
+	float lightSpec[3] = {0.1f, 0.1f, 0.1f};
+	glEnable(GL_LIGHT0);		
+	glLightfv(GL_LIGHT0, GL_DIFFUSE,  lightDif);
+	glLightfv(GL_LIGHT0, GL_AMBIENT,  lightAmb);
+	glLightfv(GL_LIGHT0, GL_SPECULAR,  lightSpec);
+	glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
 void CToeInStereoView::RenderLeftView()
 {
 	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
-	glViewport (0, 0, viewWidth/2, viewHeight);	 //sets drawing viewport
+	glViewport (0, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
 
-	gluLookAt(-IOD/2,                                      //set camera position  x=-IOD/2	
-			0.0,                                           //                     y=0.0
-			0.0,                                           //                     z=0.0
-			0.0,                                           //set camera "look at" x=0.0
-			0.0,                                           //                     y=0.0
-			screenZ,                                       //                     z=screenplane
+	gluLookAt(CameraPosition[0]-IOD/2,                                      //set camera position  x=-IOD/2	
+			CameraPosition[1],                                           //                     y=0.0
+			CameraPosition[2],                                           //                     z=0.0
+			LookAtPosition[0],                                           //set camera "look at" x=0.0
+			LookAtPosition[1],                                           //                     y=0.0
+			LookAtPosition[2],                                       //                     z=screenplane
 			0.0,                                           //set camera up vector x=0.0
 			1.0,                                           //                     y=1.0
 			0.0);                                          //                     z=0.0
   
 	glPushMatrix();
 	{
-		glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+		glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
+		glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);
 		RenderScene();
 	}
 	glPopMatrix();
@@ -78,28 +92,24 @@ void CToeInStereoView::RenderLeftView()
 void CToeInStereoView::RenderRightView()
 {
 	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
-	glViewport (viewWidth/2-1, 0, viewWidth/2, viewHeight);	 //sets drawing viewport
+	glViewport (windowWidth/2-1, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
 
-	gluLookAt(IOD/2,									   //set camera position  x=+IOD/2
-			0.0,                                           //                     y=0.0
-			0.0,                                           //                     z=0.0
-			0.0,                                           //set camera "look at" x=0.0
-			0.0,                                           //                     y=0.0
-			screenZ,                                       //                     z=screenplane
+	gluLookAt(CameraPosition[0]+IOD/2,									   //set camera position  x=+IOD/2
+			CameraPosition[1],                                           //                     y=0.0
+			CameraPosition[2],                                           //                     z=0.0
+			LookAtPosition[0],                                           //set camera "look at" x=0.0
+			LookAtPosition[1],                                           //                     y=0.0
+			LookAtPosition[2],                                       //                     z=screenplane
 			0.0,                                           //set camera up vector x=0.0
 			1.0,                                           //                     y=1.0
 			0.0);                                          //                     z=0.0
 
-	float modelview[16];
-	float projection[16];
-	glGetFloatv(GL_MODELVIEW_MATRIX, modelview);
-	glGetFloatv(GL_PROJECTION_MATRIX, projection);
-
 	glPushMatrix();
 	{
-		glTranslatef(0.0, 0.0, depthZ);                        //translate to screenplane
+		glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
+		glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);                        //translate to screenplane	
 		RenderScene();
 	}
 	glPopMatrix();
@@ -111,8 +121,6 @@ void CToeInStereoView::RenderStereoView()							//toed-in stereo
 	RenderLeftView();
 	
 	RenderRightView();
- 
-    glFlush();
 }
 
 
@@ -123,6 +131,10 @@ void CToeInStereoView::DoOpenGLDraw()
 
 void  CToeInStereoView::RenderScene()
 {
+	//Put render implementation on derived class
+
+	//	//	Create the grid.
+
     glBegin(GL_LINES);
 	
 	for (int i = -10; i <= 10; i++)
@@ -150,6 +162,7 @@ void  CToeInStereoView::RenderScene()
 		glVertex3f(0, 0, 3);
 
 	glEnd();
+
 }
 
 void CToeInStereoView::DoOpenGLResize(int nWidth, int nHeight)

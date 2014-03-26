@@ -37,11 +37,12 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include <GL/glew.h>
+
+#include "../OpenGLApplication/OpenGLHelper.h"
 #include <QtGui/QWindow>
 #include <QtGui/QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
-#include "../OpenGLApplication/OpenGLHelper.h"
+
 class QPainter;
 class QOpenGLContext;
 class QOpenGLPaintDevice;

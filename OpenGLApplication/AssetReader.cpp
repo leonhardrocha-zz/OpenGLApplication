@@ -15,36 +15,13 @@
 
 #include "AssetReader.h"
 
-
-// Information to render each assimp node
-struct MyMesh{
-	unsigned int vao;
-	unsigned int texIndex;
-	int uniformBlockIndex;
-	int numFaces;
-};
-
-std::vector<struct MyMesh> myMeshes;
-
-// This is for a shader uniform block
-struct MyMaterial{
-
-	float diffuse[4];
-	float ambient[4];
-	float specular[4];
-	float emissive[4];
-	float shininess;
-	int texCount;
-};
-
-
 // AssetReader
 
 AssetReader::AssetReader()
 {
 	// the global Assimp scene object
 	scene = NULL;
-	modelname = "C:\\Users\\UDESC\\Documents\\GitHub\\OpenGLApplication\\Mickey Mouse\\Mickey Mouse.obj";
+	isLogging = false;
 }
 
 AssetReader::~AssetReader()
@@ -52,7 +29,25 @@ AssetReader::~AssetReader()
 	// We added a log stream to the library, it's our job to disable it
 	// again. This will definitely release the last resources allocated
 	// by Assimp.
-	//aiDetachAllLogStreams();
+	if (isLogging)
+	{
+		aiDetachAllLogStreams();
+	}
+}
+
+std::string AssetReader::GetBasePath()
+{
+	std::string directory = "";
+	const size_t last_slash_idx = modelname.rfind('\\');
+	if (std::string::npos == last_slash_idx)
+	{
+		size_t last_slash_idx = modelname.rfind('/');
+	}
+	if (std::string::npos != last_slash_idx)
+	{
+		directory = modelname.substr(0, last_slash_idx + 1);
+	}
+	return directory;
 }
 
 bool AssetReader::Import3DFromFile( const std::string& pFile)
@@ -61,12 +56,18 @@ bool AssetReader::Import3DFromFile( const std::string& pFile)
 	//check if file exists
 	std::ifstream fin(pFile.c_str());
 	if(!fin.fail()) {
+		modelname = pFile;
 		fin.close();
 	}
 	else{
 		printf("Couldn't open file: %s\n", pFile.c_str());
 		printf("%s\n", importer.GetErrorString());
 		return false;
+	}
+
+	if (isLogging)
+	{
+		SetupLog();
 	}
 
 	scene = importer.ReadFile( pFile, aiProcessPreset_TargetRealtime_Quality);
@@ -99,8 +100,8 @@ void AssetReader::SetupLog()
 	// get a handle to the predefined STDOUT log stream and attach
 	// it to the logging system. It remains active for all further
 	// calls to aiImportFile(Ex) and aiApplyPostProcessing.
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
-	aiAttachLogStream(&stream);
+	//stream = aiGetPredefinedLogStream(aiDefaultLogStream_STDOUT,NULL);
+	//aiAttachLogStream(&stream);
 
 	// ... same procedure, but this stream now writes the
 	// log messages to assimp_log.txt
@@ -155,23 +156,5 @@ void AssetReader::GetBoundingBox (aiVector3D* min, aiVector3D* max)
 	min->x = min->y = min->z =  1e10f;
 	max->x = max->y = max->z = -1e10f;
 	GetBoundingBoxForNode(scene->mRootNode,min,max,&trafo);
-}
-
-// ----------------------------------------------------------------------------
-void AssetReader::color4_to_float4(const aiColor4D *c, float f[4])
-{
-	f[0] = c->r;
-	f[1] = c->g;
-	f[2] = c->b;
-	f[3] = c->a;
-}
-
-// ----------------------------------------------------------------------------
-void AssetReader::set_float4(float f[4], float a, float b, float c, float d)
-{
-	f[0] = a;
-	f[1] = b;
-	f[2] = c;
-	f[3] = d;
 }
 

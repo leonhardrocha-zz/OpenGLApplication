@@ -1,6 +1,5 @@
-#ifndef _ASSET_VIEW_H_
-#define _ASSET_VIEW_H_
-
+#ifndef _ASSET_READER_H_
+#define _ASSET_READER_H_
 
 #include <vector>
 #include <map>
@@ -32,16 +31,22 @@ public:
 
 // Operations
 public:
+	void GetBoundingBox (aiVector3D* min, aiVector3D* max);
+	virtual bool Import3DFromFile( const std::string& pFile);
+	inline float GetScaleFactor() {  return scaleFactor; }
+	inline const aiScene* GetScene() {  return scene; }
+	inline const aiVector3D GetCenter() { return scene_center;}
+	std::string GetBasePath();
+	bool isLogging;
 
 protected:
-	virtual bool Import3DFromFile( const std::string& pFile);
+	
 	virtual void SetupLog();
 
 private:
 	
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
-
 	// the global Assimp scene object
 	const aiScene* scene;// = NULL;	
 	aiVector3D scene_min, scene_max, scene_center;
@@ -52,13 +57,12 @@ private:
 	// Replace the model name by your model's filename
 	std::string modelname;// = "../Mickey Mouse/Mickey Mouse.obj";
 
-	void GetBoundingBox (aiVector3D* min, aiVector3D* max);
+	
 	void GetBoundingBoxForNode (const aiNode* nd, 
 								aiVector3D* min, 
 								aiVector3D* max, 
 								aiMatrix4x4* trafo);
-	void color4_to_float4(const aiColor4D *c, float f[4]);
-	void set_float4(float f[4], float a, float b, float c, float d);
+
 };
 
 #endif
