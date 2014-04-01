@@ -18,23 +18,24 @@
 
 class StereoView : public BaseStereoView
 {
-
+	friend class DualStereoView;
 public:
 	//	Constructor / Destructor.
 	StereoView();
 	virtual ~StereoView() {};
-// Overrides
-protected:
-	//	Main OpenGL functions.
 	virtual void SetupView();
 	virtual void SetupWindow();
 	virtual void SetupScene();
+// Overrides
+protected:
+	//	Main OpenGL functions.
 	virtual void RenderScene();
 	virtual void RenderStereoView();
 	virtual void RenderLeftView();
 	virtual void RenderRightView();
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
+	void SetRenderer(BaseAssetRenderer &newInstance);
 };
 
 #endif

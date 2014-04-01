@@ -1,7 +1,8 @@
-#ifndef _TOEIN_STEREO_VIEW_H_
-#define _TOEIN_STEREO_VIEW_H_
+#ifndef _DUAL_STEREO_VIEW_H_
+#define _DUAL_STEREO_VIEW_H_
 
-#include "BaseStereoView.h"
+#include "BaseAssetRenderer.h"
+#include "StereoView.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -16,26 +17,29 @@
 
 // ToeInStereoView window
 
-class ToeInStereoView : public BaseStereoView
+class DualStereoView : public BaseStereoView
 {
-
 public:
 	//	Constructor / Destructor.
-	ToeInStereoView();
-	virtual ~ToeInStereoView() {};
+	DualStereoView();
+	virtual ~DualStereoView() {};
+
 	virtual void SetupView();
-	virtual void SetupWindow();
+	virtual void SetupDualWindow();
 	virtual void SetupScene();
 
+	float VirtualPlanePosition[3];
 // Overrides
 protected:
 	//	Main OpenGL functions.
-	virtual void RenderScene();
 	virtual void RenderStereoView();
 	virtual void RenderLeftView();
 	virtual void RenderRightView();
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
+	StereoView rightStereoView;
+	StereoView leftStereoView;
+	void SetRenderer(BaseAssetRenderer &newInstance);
 };
 
 #endif

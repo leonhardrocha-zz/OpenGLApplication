@@ -12,9 +12,11 @@ void AssetWindow::SetupWindow()
 
 void AssetWindow::initialize()
 {
+	SetupWindow();
 	SetupView();
 	SetupScene();
 	renderer.Initialize();
+	SetRenderer((BaseAssetRenderer&) renderer);
 }
 
 void AssetWindow::render()

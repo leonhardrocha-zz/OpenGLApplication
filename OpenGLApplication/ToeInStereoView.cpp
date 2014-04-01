@@ -60,11 +60,6 @@ void ToeInStereoView::SetupScene()
 
 void ToeInStereoView::RenderLeftView()
 {
-	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
-	glViewport (0, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();                                        //reset modelview matrix
-
 	gluLookAt(CameraPosition[0]-IOD/2,                                      //set camera position  x=-IOD/2	
 			CameraPosition[1],                                           //                     y=0.0
 			CameraPosition[2],                                           //                     z=0.0
@@ -86,11 +81,6 @@ void ToeInStereoView::RenderLeftView()
 
 void ToeInStereoView::RenderRightView()
 {
-	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
-	glViewport (windowWidth/2-1, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();                                        //reset modelview matrix
-
 	gluLookAt(CameraPosition[0]+IOD/2,									   //set camera position  x=+IOD/2
 			CameraPosition[1],                                           //                     y=0.0
 			CameraPosition[2],                                           //                     z=0.0
@@ -113,7 +103,17 @@ void ToeInStereoView::RenderRightView()
 
 void ToeInStereoView::RenderStereoView()							//toed-in stereo
 {
+	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
+	glViewport (0, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();                                        //reset modelview matrix
+	
 	RenderLeftView();
+	
+	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
+	glViewport (windowWidth/2-1, 0, windowWidth/2, windowHeight);	 //sets drawing viewport
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();                                        //reset modelview matrix
 	
 	RenderRightView();
 }

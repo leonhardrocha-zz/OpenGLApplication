@@ -30,6 +30,9 @@
     <ClCompile Include="StereoView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DualStereoView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseStereoView.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StereoView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DualStereoView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

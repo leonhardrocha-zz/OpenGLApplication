@@ -1,0 +1,20 @@
+e: eye position
+c: lookat center
+u: up vector
+ 
+Z = normalize(e - c)
+X = normalize(up x Z) (z2i - z0k)
+Y = Z x X (z1x2 - x1z2) i + (x0z2 - z0x2) j + (z0x1 - z1x0) k
+ 
+M1 is a matrix whose columns are (X, 0), (Y, 0), (Z, 0) (0,0,0,1)
+M2 is a matrix whose columns are (1,0,0,0), (0,1,0,0), (0,0,1,0), (-e.x, -e.y, -e.z, 1)
+ 
+The lookat matrix is the product of M1 and M2
+ 
+L = M1 * M2
+
+z0 x0 i
+z1 x1 j 
+z2 x2 k
+
+(z1x2 - x1z2) i + (x0z2 - z0x2) j + (z0x1 - z1x0) k

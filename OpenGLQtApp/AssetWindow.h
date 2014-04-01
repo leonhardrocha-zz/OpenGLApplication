@@ -1,7 +1,7 @@
 #include "../OpenGLApplication/OpenGLHelper.h"
 #include "OpenGLWindow.h"
 
-class AssetWindow : public OpenGLWindow, ToeInStereoView
+class AssetWindow : public OpenGLWindow, DualStereoView
 {
 public:
     AssetWindow();
@@ -11,6 +11,7 @@ public:
 	virtual void SetupWindow();
 	// virtual void SetupScene();
 	virtual void RenderScene();
+
 
 protected:
 

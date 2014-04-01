@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AssetReader.cpp" />
+    <ClCompile Include="DualStereoView.cpp" />
     <ClCompile Include="OpenGL21Renderer.cpp" />
     <ClCompile Include="OpenGLHelper.cpp" />
     <ClCompile Include="StereoView.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="AssetReader.h" />
     <ClInclude Include="BaseAssetRenderer.h" />
     <ClInclude Include="BaseStereoView.h" />
+    <ClInclude Include="DualStereoView.h" />
     <ClInclude Include="OpenGL21Renderer.h" />
     <ClInclude Include="OpenGLHelper.h" />
     <ClInclude Include="StereoView.h" />
