@@ -19,6 +19,7 @@
 class StereoView : public BaseStereoView
 {
 	friend class DualStereoView;
+	friend class ToeInStereoView;
 public:
 	//	Constructor / Destructor.
 	StereoView();
@@ -33,6 +34,8 @@ protected:
 	virtual void RenderStereoView();
 	virtual void RenderLeftView();
 	virtual void RenderRightView();
+	virtual void ResetLeftView();
+	virtual void ResetRightView();
 	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
 	void SetRenderer(BaseAssetRenderer &newInstance);

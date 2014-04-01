@@ -97,11 +97,11 @@ void StereoView::RenderLeftView()
             nearZ, farZ);
 		//translate to cancel parallax
 		glTranslatef(leftCam.modeltranslation - CameraPosition[0], -CameraPosition[1], -CameraPosition[2]);
+		//glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		{
-			glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
-			glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);
+			glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);			
 			RenderScene();
 		}
 		glPopMatrix();
@@ -119,12 +119,11 @@ void StereoView::RenderRightView()
             nearZ, farZ);
 		//translate to cancel parallax
 		glTranslatef(rightCam.modeltranslation - CameraPosition[0], -CameraPosition[1], -CameraPosition[2]);
-
+		//glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);                        //translate to screenplane	
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		{
 			glLightfv(GL_LIGHT0, GL_POSITION,  LightPosition);
-			glTranslatef(LookAtPosition[0], LookAtPosition[1], LookAtPosition[2]);                        //translate to screenplane	
 			RenderScene();
 		}
 		glPopMatrix();
@@ -133,7 +132,16 @@ void StereoView::RenderRightView()
 }
 
 
-void StereoView::RenderStereoView()							//toed-in stereo
+void StereoView::RenderStereoView()						
+{
+	ResetLeftView();
+	RenderLeftView();
+	
+	ResetRightView();
+	RenderRightView();
+}
+
+void StereoView::ResetLeftView()
 {
 	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
 	glViewport (windowOffsetX, windowOffsetY, windowWidth/2, windowHeight);	 //sets drawing viewport
@@ -141,17 +149,17 @@ void StereoView::RenderStereoView()							//toed-in stereo
 	glLoadIdentity();                                        //reset projection matrix
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();                                        //reset modelview matrix
-	RenderLeftView();
-	
+}
+
+void StereoView::ResetRightView()
+{
 	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
 	glViewport (windowOffsetX + windowWidth/2, windowOffsetY, windowWidth/2, windowHeight);	 //sets drawing viewport
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();                                        //reset projection matrix
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();                                        //reset modelview matrix
-	RenderRightView();
+	glLoadIdentity();                                        //reset modelview matrix                                //reset modelview matrix
 }
-
 
 void StereoView::DoOpenGLDraw()
 {
@@ -164,55 +172,14 @@ void  StereoView::RenderScene()
 	if (assetRenderer != NULL)
 	{
 		assetRenderer->Render();
-	}
-	
-
-	////	//	Create the grid.
-
- //   glBegin(GL_LINES);
-	//
-	//for (int i = -10; i <= 10; i++)
- //   {
-	//	glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
- //       glVertex3f((float)i, 0, -10);
- //       glVertex3f((float)i, 0, 10);
- //       glVertex3f(-10, 0, (float)i);
- //       glVertex3f(10, 0, (float)i);
-	//}
-	//
-	//glEnd();
-
-	////	Create the axies.
-	//glBegin(GL_LINES);
-
-	//	glColor4f(1, 0, 0, 1);
-	//	glVertex3f(0, 0, 0);
-	//	glVertex3f(3, 0, 0);
-	//	glColor4f(0, 1, 0, 1);
-	//	glVertex3f(0, 0, 0);
-	//	glVertex3f(0, 3, 0);
-	//	glColor4f(0, 0, 1, 1);
-	//	glVertex3f(0, 0, 0);
-	//	glVertex3f(0, 0, 3);
-
-	//glEnd();
-
+	}	
 }
 
 void StereoView::DoOpenGLResize(int nWidth, int nHeight)
 {
-	//	Create the viewport.
-	glViewport(0, 0, nWidth, nHeight);
-
-	//	Load the identity projection matrix.
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	//	Create a perspective viewport transformation.
-	gluPerspective(fovy, aspect, nearZ, farZ);
-
-	//	Go back to the modelview matrix.
-	glMatrixMode(GL_MODELVIEW);
+	windowWidth = nWidth;
+	windowHeight = nHeight;
+	RenderStereoView();
 }
 
 void StereoView::SetRenderer(BaseAssetRenderer &newInstance)

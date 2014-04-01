@@ -3,6 +3,7 @@
 
 #include "BaseAssetRenderer.h"
 #include "StereoView.h"
+#include "BaseStereoView.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -17,7 +18,7 @@
 
 // ToeInStereoView window
 
-class DualStereoView : public BaseStereoView
+class DualStereoView : public StereoView
 {
 public:
 	//	Constructor / Destructor.
@@ -35,7 +36,6 @@ protected:
 	virtual void RenderStereoView();
 	virtual void RenderLeftView();
 	virtual void RenderRightView();
-	virtual void DoOpenGLDraw();
 	virtual void DoOpenGLResize(int nWidth, int nHeight);
 	StereoView rightStereoView;
 	StereoView leftStereoView;

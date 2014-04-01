@@ -1,7 +1,7 @@
 #ifndef _TOEIN_STEREO_VIEW_H_
 #define _TOEIN_STEREO_VIEW_H_
 
-#include "BaseStereoView.h"
+#include "DualStereoView.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -16,7 +16,7 @@
 
 // ToeInStereoView window
 
-class ToeInStereoView : public BaseStereoView
+class ToeInStereoView : public DualStereoView
 {
 
 public:
@@ -24,18 +24,12 @@ public:
 	ToeInStereoView();
 	virtual ~ToeInStereoView() {};
 	virtual void SetupView();
-	virtual void SetupWindow();
-	virtual void SetupScene();
 
 // Overrides
 protected:
 	//	Main OpenGL functions.
-	virtual void RenderScene();
-	virtual void RenderStereoView();
 	virtual void RenderLeftView();
-	virtual void RenderRightView();
-	virtual void DoOpenGLDraw();
-	virtual void DoOpenGLResize(int nWidth, int nHeight);
+	virtual void RenderRightView();	
 };
 
 #endif

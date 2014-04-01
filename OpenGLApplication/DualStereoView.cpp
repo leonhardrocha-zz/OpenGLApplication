@@ -49,10 +49,7 @@ void DualStereoView::RenderStereoView()
 	glDrawBuffer(GL_BACK_LEFT);                              //draw into back left buffer
 	glPushMatrix();
 	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();                                        //reset projection matrix
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();                                        //reset modelview matrix	
+		ResetLeftView();
 		RenderLeftView();
 	}
 	glPopMatrix();
@@ -60,24 +57,16 @@ void DualStereoView::RenderStereoView()
 	glDrawBuffer(GL_BACK_RIGHT);                             //draw into back right buffer
 	glPushMatrix();
 	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();                                        //reset projection matrix
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();                                        //reset modelview matrix
+		ResetRightView();
 		RenderRightView();
 	}
 }
 
 
-void DualStereoView::DoOpenGLDraw()
-{
-	RenderStereoView();
-}
-
-
 void DualStereoView::DoOpenGLResize(int nWidth, int nHeight)
 {
-	rightStereoView.DoOpenGLResize(nWidth, nHeight);
+	rightStereoView.DoOpenGLResize(nWidth/2, nHeight);
+	leftStereoView.DoOpenGLResize(nWidth/2, nHeight);
 }
 
 void DualStereoView::SetRenderer(BaseAssetRenderer &newInstance)
