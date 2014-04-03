@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLApplication", "OpenGLApplication\OpenGLApplication.vcxproj", "{BB169C6F-9C29-48C1-BCCF-45E03B1B6B5C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLHelper", "OpenGLApplication\OpenGLApplication.vcxproj", "{BB169C6F-9C29-48C1-BCCF-45E03B1B6B5C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLQtApp", "OpenGLQtApp\OpenGLQtApp.vcxproj", "{40010AA8-43C8-475B-8DE5-1F9A6092706B}"
 	ProjectSection(ProjectDependencies) = postProject

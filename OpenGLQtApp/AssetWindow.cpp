@@ -8,6 +8,8 @@ void AssetWindow::SetupWindow()
 {
 	windowWidth = width();
 	windowHeight = height();
+	windowOffsetX = 0;
+	windowOffsetY = 0;
 }
 
 void AssetWindow::initialize()
@@ -28,4 +30,11 @@ void AssetWindow::render()
 void AssetWindow::RenderScene()
 {
 	renderer.Render();
+}
+
+void AssetWindow::resizeWindow()
+{
+	SetupWindow();
+	SetupView();
+	SetupScene();
 }

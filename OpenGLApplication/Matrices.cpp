@@ -562,7 +562,7 @@ Matrix4& Matrix4::LookAt(const Vector3& vecPos, const Vector3& vecLookAt, bool R
 		X = Vector3(1.0f, 0.0f, 0.0f).cross(Z);
 		magnitude = X.length();
 	}
-	if ( magnitude == 0.0f);
+	if ( magnitude == 0.0f)
 	{
 		exit(1);
 	}

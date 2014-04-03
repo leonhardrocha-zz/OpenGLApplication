@@ -29,7 +29,9 @@ public:
 protected:
 	//	Main OpenGL functions.
 	virtual void RenderLeftView();
-	virtual void RenderRightView();	
+	virtual void RenderRightView();
+	float CameraRotationAngle;
+	float CameraRotationShift[3];
 };
 
 #endif

@@ -56,6 +56,7 @@ public:
 
     virtual void render(QPainter *painter);
     virtual void render();
+	virtual void resizeWindow() {};
 
     virtual void initialize();
 
@@ -64,7 +65,7 @@ public:
 public slots:
     void renderLater();
     void renderNow();
-
+	
 protected:
     bool event(QEvent *event);
 

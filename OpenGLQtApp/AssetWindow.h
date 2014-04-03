@@ -11,6 +11,7 @@ public:
 	virtual void SetupWindow();
 	// virtual void SetupScene();
 	virtual void RenderScene();
+	virtual void resizeWindow();
 
 
 protected:

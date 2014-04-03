@@ -1,4 +1,6 @@
 #include "OpenGL21Renderer.h"
+#include <iostream>
+using std::cerr;
 
 // Information to render each assimp node
 struct MyMesh{
@@ -25,8 +27,12 @@ struct MyMaterial{
 
 void OpenGL21Renderer::Initialize()
 {
-	Modelname = "C:\\Users\\UDESC\\Downloads\\airplane\\Airplane AN-2 N200314.3DS";
-	reader.Import3DFromFile(Modelname);
+	Modelname = "../airplane/Airplane AN-2 N200314.3DS";
+	if(!reader.Import3DFromFile(Modelname))
+	{
+		cerr << "Could not load asset: " + Modelname;
+		exit(1);
+	}
 	scene = reader.GetScene();
 	std::string basedir = reader.GetBasePath();
 	LoadGLTextures(basedir);

@@ -112,7 +112,10 @@ void OpenGLWindow::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
 
     if (isExposed())
+	{
+		resizeWindow();
         renderNow();
+	}
 }
 
 void OpenGLWindow::renderNow()

@@ -38,10 +38,10 @@ AssetReader::~AssetReader()
 std::string AssetReader::GetBasePath()
 {
 	std::string directory = "";
-	const size_t last_slash_idx = modelname.rfind('\\');
+	size_t last_slash_idx = modelname.rfind('\\');
 	if (std::string::npos == last_slash_idx)
 	{
-		size_t last_slash_idx = modelname.rfind('/');
+		last_slash_idx = modelname.rfind('/');
 	}
 	if (std::string::npos != last_slash_idx)
 	{
