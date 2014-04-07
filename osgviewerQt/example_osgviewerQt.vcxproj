@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{52965829-F97A-492F-8016-718E737A6088}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>Examples osgviewerQt</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">example_osgviewerQt.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">osgviewerQtd</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">example_osgviewerQt.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">osgviewerQt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">example_osgviewerQt.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">osgviewerQts</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">example_osgviewerQt.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">osgviewerQtrd</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\3rdParty\x86\lib;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\3rdParty\x86\lib;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4706;4127;4100</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;OpenThreadsrd.lib;osgrd.lib;osgDBrd.lib;osgUtilrd.lib;osgGArd.lib;osgViewerrd.lib;osgTextrd.lib;osgWidgetrd.lib;osgQtrd.lib;opengl32.lib;Qt5Widgetsd.lib;Qt5OpenGLd.lib;zlibd.lib;Qt5Guid.lib;Qt5Cored.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/lib/osgviewerQtd.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/bin/osgviewerQtd.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DisableSpecificWarnings>4706;4127;4100</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\OpenThreads.lib;..\..\lib\osg.lib;..\..\lib\osgDB.lib;..\..\lib\osgUtil.lib;..\..\lib\osgGA.lib;..\..\lib\osgViewer.lib;..\..\lib\osgText.lib;..\..\lib\osgWidget.lib;..\..\lib\osgQt.lib;opengl32.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Widgets.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5OpenGL.lib;..\..\lib\osgWidget.lib;..\..\lib\osgViewer.lib;..\..\lib\osgGA.lib;..\..\lib\osgText.lib;..\..\lib\osgDB.lib;..\..\3rdParty\x86\lib\zlib.lib;..\..\lib\osgUtil.lib;..\..\lib\osg.lib;..\..\lib\OpenThreads.lib;opengl32.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Widgets.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Gui.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Core.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/lib/osgviewerQt.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/bin/osgviewerQt.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DisableSpecificWarnings>4706;4127;4100</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\OpenThreadss.lib;..\..\lib\osgs.lib;..\..\lib\osgDBs.lib;..\..\lib\osgUtils.lib;..\..\lib\osgGAs.lib;..\..\lib\osgViewers.lib;..\..\lib\osgTexts.lib;..\..\lib\osgWidgets.lib;..\..\lib\osgQts.lib;opengl32.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Widgets.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5OpenGL.lib;..\..\lib\osgWidgets.lib;..\..\lib\osgViewers.lib;..\..\lib\osgGAs.lib;..\..\lib\osgTexts.lib;..\..\lib\osgDBs.lib;..\..\3rdParty\x86\lib\zlib.lib;..\..\lib\osgUtils.lib;..\..\lib\osgs.lib;..\..\lib\OpenThreadss.lib;opengl32.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Widgets.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Gui.lib;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\lib\Qt5Core.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/lib/osgviewerQts.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/bin/osgviewerQts.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4706;4127;4100</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;QT_OPENGL_LIB;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;QT_NO_DEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtWidgets;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtGui;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtCore;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\mkspecs\win32-msvc2010;C:\Qt\Qt5.2.1\5.2.1\msvc2010_opengl\include\QtOpenGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;OpenThreadsrd.lib;osgrd.lib;osgDBrd.lib;osgUtilrd.lib;osgGArd.lib;osgViewerrd.lib;osgTextrd.lib;osgWidgetrd.lib;osgQtrd.lib;opengl32.lib;Qt5Widgets.lib;Qt5OpenGL.lib;zlibd.lib;Qt5Gui.lib;Qt5Core.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/lib/osgviewerQtrd.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/bin/osgviewerQtrd.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -HC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 -BC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 --check-stamp-file C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -HC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 -BC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 --check-stamp-file C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -HC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 -BC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 --check-stamp-file C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -HC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 -BC:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1 --check-stamp-file C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/examples/osgviewerQt/CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\UDESC\Downloads\OpenSceneGraph-3.3.1\examples\osgviewerQt\CMakeFiles\generate.stamp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="osgviewerQt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/OpenThreads/win32/OpenThreads.vcxproj">
+      <Project>17372F3F-D263-46F6-9F3E-3BD21DECACFD</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/ZERO_CHECK.vcxproj">
+      <Project>CE734928-2CD3-4BF0-A61A-836B3895CE9E</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osg/osg.vcxproj">
+      <Project>866D76D6-37AE-4F44-81D9-DDA6A74B4751</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgDB/osgDB.vcxproj">
+      <Project>E634E097-47CE-4BCF-AA15-16FDD8667C9F</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgGA/osgGA.vcxproj">
+      <Project>5E2031E5-B989-43BC-B224-1CF37853A6F3</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgQt/osgQt.vcxproj">
+      <Project>29F014C8-3392-49AC-8E8F-5F951A9078D6</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgText/osgText.vcxproj">
+      <Project>1087F1A7-F2A5-4F82-AD8A-A7B45B1C0494</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgUtil/osgUtil.vcxproj">
+      <Project>9602B4A0-BC01-4270-A879-DCA0577DB9E9</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgViewer/osgViewer.vcxproj">
+      <Project>FF912953-42EE-4C01-B733-A2667DDB8D20</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/UDESC/Downloads/OpenSceneGraph-3.3.1/src/osgWidget/osgWidget.vcxproj">
+      <Project>D1674D81-38C2-430D-BE9D-16DEDF2FA18D</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
