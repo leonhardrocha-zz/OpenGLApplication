@@ -8,10 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGLQtApp", "OpenGLQtApp\
 		{BB169C6F-9C29-48C1-BCCF-45E03B1B6B5C} = {BB169C6F-9C29-48C1-BCCF-45E03B1B6B5C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Examples osgviewerQt", "osgviewerQt\example_osgviewerQt.vcxproj", "{52965829-F97A-492F-8016-718E737A6088}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Applications osgviewer", "osgviewer\application_osgviewer.vcxproj", "{F3214BA2-BBF1-403D-BC31-4A348B950E71}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,22 +32,6 @@ Global
 		{40010AA8-43C8-475B-8DE5-1F9A6092706B}.Release|Win32.Build.0 = Release|Win32
 		{40010AA8-43C8-475B-8DE5-1F9A6092706B}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{40010AA8-43C8-475B-8DE5-1F9A6092706B}.RelWithDebInfo|Win32.Build.0 = Release|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.Debug|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.Debug|Win32.Build.0 = RelWithDebInfo|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.Release|Win32.ActiveCfg = Release|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.Release|Win32.Build.0 = Release|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{52965829-F97A-492F-8016-718E737A6088}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.Debug|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.Debug|Win32.Build.0 = RelWithDebInfo|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.Release|Win32.ActiveCfg = Release|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.Release|Win32.Build.0 = Release|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{F3214BA2-BBF1-403D-BC31-4A348B950E71}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
