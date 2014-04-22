@@ -144,6 +144,9 @@
     <CustomBuild Include="MyDock.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Tracker.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenGLQtApp.rc" />
@@ -160,6 +163,9 @@
     </None>
     <None Include="titlebarRight.png">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="tracker.moc">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
 </Project>

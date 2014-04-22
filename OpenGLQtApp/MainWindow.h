@@ -45,6 +45,7 @@
 #include <QMainWindow>
 #include <QTextEdit>
 
+
 class ToolBar;
 QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QSignalMapper)
@@ -66,6 +67,7 @@ public:
     MainWindow(const QMap<QString, QSize> &customSizeHints,
                 QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
+
 protected:
     void showEvent(QShowEvent *event);
 
@@ -84,6 +86,8 @@ private:
     void setupToolBar();
     void setupMenuBar();
     void setupDockWidgets(const QMap<QString, QSize> &customSizeHints);
+
+	
 };
 
 

@@ -1,11 +1,12 @@
 #include "OpenGLQtApp.h"
 #include "AssetWindow.h"
-#include "SingleFace.h"
 #include "MainWindow.h"
-
-
-#include <QtQuick/qquickview.h>
 #include <QtWidgets/QApplication>
+#include "Tracker.h"
+
+
+
+
 
 void render_qt_text(QPainter *painter, int w, int h, const QColor &color) {
     QPainterPath path;
@@ -118,16 +119,14 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-	
-    QSurfaceFormat format;
+	QSurfaceFormat format;
     format.setSamples(4);
 	AssetWindow window;
 	window.setFormat(format);
-    window.resize(640, 480);
-	window.show();
-
-	QQuickView *view = new QQuickView(&window);
-	QWidget *oglContainer = QWidget::createWindowContainer(view);
+    window.resize(640, 480);	
+	window.setAnimating(true);
+		
+	QWidget *oglContainer = QWidget::createWindowContainer(&window);
 	oglContainer->setMinimumSize(640,480);
 	oglContainer->setMaximumSize(1280,960);
 	oglContainer->setFocusPolicy(Qt::TabFocus);	 
@@ -137,26 +136,19 @@ int main(int argc, char **argv)
 	mainWindow.menuBar()->addMenu("&File")->addAction("&Exit", &app, SLOT(quit()));
 
 	QWidget central(&mainWindow);
-	QVBoxLayout vbox(&central);
-	QWidget viewWidget(&mainWindow);
 	
+	QWidget trackerWidget(&central);
+	Tracker tracker(&trackerWidget);
+	tracker.InitArgs(argc, argv);
+	QVBoxLayout vbox(&central);	
+	vbox.addWidget(&tracker);
 	vbox.addWidget(oglContainer);
 	
-	QWidget *trackerWidget = new QWidget();
-    mainWindow.setDockNestingEnabled(true);
-	mainWindow.setMenuWidget(trackerWidget);
-
-    window.setAnimating(true);
-	/*auto hFaceTrackingThread = CreateThread(NULL, 0, StartThread, (PVOID)trackerWidget, 0, 0);	
-*/
-	SingleFace tracker(trackerWidget);
-	tracker.InitArgs(argc, argv);
-	vbox.addWidget(&tracker);
-
 	mainWindow.setCentralWidget(&central);
 	mainWindow.show();
 
+	tracker.InitInstanceInHostWindow();
+	
 	auto status = app.exec();
-	delete oglContainer;
     return status;
 }
