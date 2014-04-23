@@ -144,7 +144,7 @@
     <CustomBuild Include="MyDock.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Tracker.h">
+    <CustomBuild Include="TrackerDock.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -163,9 +163,6 @@
     </None>
     <None Include="titlebarRight.png">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="tracker.moc">
-      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
 </Project>

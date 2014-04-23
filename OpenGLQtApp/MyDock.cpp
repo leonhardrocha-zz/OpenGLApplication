@@ -272,6 +272,11 @@ void MyDock::resizeEvent(QResizeEvent *e)
     QDockWidget::resizeEvent(e);
 }
 
+void MyDock::paintEvent(QPaintEvent *e)
+{
+    QDockWidget::paintEvent(e);
+}
+
 
 void MyDock::allow(Qt::DockWidgetArea area, bool a)
 {

@@ -2,7 +2,7 @@
 #include "AssetWindow.h"
 #include "MainWindow.h"
 #include <QtWidgets/QApplication>
-#include "Tracker.h"
+
 
 
 
@@ -138,16 +138,11 @@ int main(int argc, char **argv)
 	QWidget central(&mainWindow);
 	
 	QWidget trackerWidget(&central);
-	Tracker tracker(&trackerWidget);
-	tracker.InitArgs(argc, argv);
 	QVBoxLayout vbox(&central);	
-	vbox.addWidget(&tracker);
 	vbox.addWidget(oglContainer);
 	
 	mainWindow.setCentralWidget(&central);
 	mainWindow.show();
-
-	tracker.InitInstanceInHostWindow();
 	
 	auto status = app.exec();
     return status;

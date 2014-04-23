@@ -41,6 +41,7 @@
 
 #include "mainwindow.h"
 #include "MyDock.h"
+#include "TrackerDock.h"
 #include "toolbar.h"
 #include <QDockWidget>
 #include <QAction>
@@ -313,22 +314,22 @@ void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
         Qt::DockWidgetArea area;
     } sets [] = {
 #ifndef Q_OS_MAC
-        { "Black", 0, Qt::LeftDockWidgetArea },
+        { "Black", 0, Qt::TopDockWidgetArea },
 #else
         { "Black", Qt::Drawer, Qt::LeftDockWidgetArea },
 #endif
-        { "White", 0, Qt::RightDockWidgetArea },
     };
     const int setCount = sizeof(sets) / sizeof(Set);
 
     for (int i = 0; i < setCount; ++i) {
-        MyDock *swatch = new MyDock(tr(sets[i].name), this, Qt::WindowFlags(sets[i].flags));
+        TrackerDock *swatch = new TrackerDock(tr(sets[i].name), this, Qt::WindowFlags(sets[i].flags));
         
         QString name = QString::fromLatin1(sets[i].name);
-        /*if (customSizeHints.contains(name))
-            swatch->setCustomSizeHint(customSizeHints.value(name));*/
+        if (customSizeHints.contains(name))
+            swatch->setCustomSizeHint(customSizeHints.value(name));
 
         addDockWidget(sets[i].area, swatch);
+		swatch->setFloating(true);
         dockWidgetMenu->addMenu(swatch->menu);
     }
 

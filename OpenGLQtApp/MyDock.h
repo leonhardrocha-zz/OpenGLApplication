@@ -1,5 +1,5 @@
-#ifndef COLORSWATCH_H
-#define COLORSWATCH_H
+#ifndef MYDOCK_H
+#define MYDOCK_H
 
 #include <QAction>
 #include <QFrame>
@@ -43,11 +43,13 @@ public:
     explicit MyDock(const QString &colorName, QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
     QMenu *menu;
+
     void setCustomSizeHint(const QSize &size);
 
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
-    virtual void resizeEvent(QResizeEvent *e);
+    virtual void resizeEvent(QResizeEvent *e);	
+	virtual void paintEvent(QPaintEvent *e);
 
 private:
     void allow(Qt::DockWidgetArea area, bool allow);
@@ -73,6 +75,7 @@ private slots:
 
     void splitInto(QAction *action);
     void tabInto(QAction *action);
+
 };
 
 #endif
