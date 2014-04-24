@@ -9,6 +9,7 @@
 #include <FaceTrackLib.h>
 #include <NuiApi.h>
 #include <NuiSensor.h>
+#include "EggAvatar.h"
 
 class KinectSensor
 {
@@ -26,6 +27,7 @@ public:
     IFTImage*   GetDepthBuffer(){ return(m_DepthBuffer); };
     float       GetZoomFactor() { return(m_ZoomFactor); };
     POINT*      GetViewOffSet() { return(&m_ViewOffset); };
+	EggAvatar*  GetEggAvatar() { return(&m_eggavatar); };
     HRESULT     GetClosestHint(FT_VECTOR3D* pHint3D);
 	IFTResult*  m_pFTResult;
 	float		m_smallestDistance;
@@ -62,4 +64,6 @@ protected:
     void GotVideoAlert();
     void GotDepthAlert();
     void GotSkeletonAlert();
+	EggAvatar    m_eggavatar;
+
 };

@@ -56,7 +56,7 @@ EggAvatar::EggAvatar()
     m_TranslationX = 0;
     m_TranslationY = 0;
     m_FacingUser = true;
-    m_HeadPoseFiltering = false;
+    m_HeadPoseFiltering = true;
     m_ReportedPitchAverage = 0;
     m_ReportedYawAverage = 0;
     m_ReportedRollAverage = 0;
@@ -174,7 +174,7 @@ BOOL EggAvatar::SetRotations(const float pitchDegrees, const float yawDegrees, c
     }
 
     m_Pitch = (pitchDegrees-m_ReportedPitchAverage)/180.0f;
-    m_Yaw = (-yawDegrees-m_ReportedYawAverage)/180.0f;
+    m_Yaw = (yawDegrees-m_ReportedYawAverage)/180.0f;
     m_Roll = (rollDegrees-m_ReportedRollAverage)/180.0f;
     m_FacingUser = (abs(m_Pitch) < 0.2f && abs(m_Yaw) < 0.2f);
     return TRUE;

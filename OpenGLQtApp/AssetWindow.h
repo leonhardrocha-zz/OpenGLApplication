@@ -1,4 +1,4 @@
-#include "../OpenGLApplication/OpenGLHelper.h"
+#include <OpenGLHelper.h>
 #include "OpenGLWindow.h"
 
 class AssetWindow : public OpenGLWindow, ToeInStereoView

@@ -117,7 +117,7 @@ QMap<QString, QSize> parseCustomSizeHints(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+	QApplication app(argc, argv);
 
 	QSurfaceFormat format;
     format.setSamples(4);

@@ -104,6 +104,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MyDock.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="TrackerDock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_openglqtapp.h">

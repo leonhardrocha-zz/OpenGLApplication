@@ -201,23 +201,22 @@ HRESULT MultiFTHelper::GetCameraConfig(FT_CAMERA_CONFIG* cameraConfig)
 	return m_KinectSensorPresent ? m_pKinectSensor->GetVideoConfiguration(cameraConfig) : E_FAIL;
 }
 
-HRESULT MultiFTHelper::Init(HWND hWnd, 
-							NUI_IMAGE_TYPE depthType, 
-							NUI_IMAGE_RESOLUTION depthRes, 
-							BOOL bNearMode, 
-							BOOL bFallbackToDefault, 
-							NUI_IMAGE_TYPE colorType, 
-							NUI_IMAGE_RESOLUTION colorRes, 
-							BOOL bSeatedSkeletonMode,
-							FTHelperCallBack callBack, 
-							PVOID callBackParam)
-{   
+HRESULT MultiFTHelper::Init(NUI_IMAGE_TYPE       depthType,
+							NUI_IMAGE_RESOLUTION depthRes,
+							BOOL                 bNearMode,
+							BOOL                 bFallbackToDefault,
+							BOOL                 bSeatedSkeletonMode,
+							NUI_IMAGE_TYPE       colorType,
+							NUI_IMAGE_RESOLUTION colorRes,
+							HWND 				 hWnd,
+							FTHelperCallBack	 callBack,
+							PVOID				 callBackParam)
+{      
 	if (!callBack)
     {
         return E_INVALIDARG;
     }
 
-    m_hWnd = hWnd;
     m_ApplicationIsRunning = true;
     m_depthType = depthType;
     m_depthRes = depthRes;
@@ -226,6 +225,7 @@ HRESULT MultiFTHelper::Init(HWND hWnd,
     m_bSeatedSkeletonMode = bSeatedSkeletonMode;
     m_colorType = colorType;
     m_colorRes = colorRes;
+	m_hWnd = m_hWnd;
 	m_CallBack = callBack;
     m_CallBackParam = callBackParam;
 
@@ -393,9 +393,11 @@ DWORD WINAPI MultiFTHelper::FaceTrackingThread()
 		
 		m_pKinectSensor = bestSensor.first;
 		tracker->CheckCameraInput();			
-		
-		InvalidateRect(m_hWnd, NULL, FALSE);
-		UpdateWindow(m_hWnd);
+		if (tracker->m_hWnd)
+		{
+			InvalidateRect(tracker->m_hWnd, NULL, FALSE);
+			UpdateWindow(m_hWnd);
+		}
 		
 		if (!tracker->m_LastTrackSucceeded)
 		{

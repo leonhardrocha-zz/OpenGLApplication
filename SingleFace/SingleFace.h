@@ -7,7 +7,7 @@
 
 #include <FaceTrackLib.h>
 #include "resource.h"
-#include "EggAvatar.h"
+//#include "EggAvatar.h"
 #include "MultiFTHelper.h"
 
 class SingleFace
@@ -26,8 +26,7 @@ public:
         , m_depthRes(NUI_IMAGE_RESOLUTION_320x240)
         , m_colorRes(NUI_IMAGE_RESOLUTION_640x480)
         , m_bNearMode(TRUE)
-        , m_bSeatedSkeletonMode(TRUE)
-	
+        , m_bSeatedSkeletonMode(TRUE)	
 {
 }	
 
@@ -63,19 +62,20 @@ protected:
     HINSTANCE                   m_hInst;
     HWND                        m_hWnd;
     HACCEL                      m_hAccelTable;
-    EggAvatar                   m_eggavatar;
     //FTHelper                    m_DualFTHelper;
 	//DualFTHelper                m_DualFTHelper;
 	MultiFTHelper               m_MultiFTHelper;
     IFTImage*                   m_pImageBuffer;
     IFTImage*                   m_pVideoBuffer;
-
     NUI_IMAGE_TYPE              m_depthType;
     NUI_IMAGE_TYPE              m_colorType;
     NUI_IMAGE_RESOLUTION        m_depthRes;
     NUI_IMAGE_RESOLUTION        m_colorRes;
     BOOL                        m_bNearMode;
     BOOL                        m_bSeatedSkeletonMode;
+	EggAvatar*                  m_pEggAvatar;
+	TrackerPair*				m_pSensorTrackerPair;
+
 };
 
 

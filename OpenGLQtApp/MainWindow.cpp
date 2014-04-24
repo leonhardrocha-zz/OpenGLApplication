@@ -313,11 +313,7 @@ void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
         uint flags;
         Qt::DockWidgetArea area;
     } sets [] = {
-#ifndef Q_OS_MAC
         { "Black", 0, Qt::TopDockWidgetArea },
-#else
-        { "Black", Qt::Drawer, Qt::LeftDockWidgetArea },
-#endif
     };
     const int setCount = sizeof(sets) / sizeof(Set);
 
@@ -326,11 +322,14 @@ void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
         
         QString name = QString::fromLatin1(sets[i].name);
         if (customSizeHints.contains(name))
+		{
             swatch->setCustomSizeHint(customSizeHints.value(name));
-
-        addDockWidget(sets[i].area, swatch);
+		}
 		swatch->setFloating(true);
+
+        addDockWidget(sets[i].area, swatch);	
         dockWidgetMenu->addMenu(swatch->menu);
+		
     }
 
     createDockWidgetAction = new QAction(tr("Add dock widget..."), this);

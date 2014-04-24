@@ -85,16 +85,16 @@ BOOL SingleFace::InitInstance(HINSTANCE hInstance, PWSTR lpCmdLine, int nCmdShow
     ShowWindow(m_hWnd, nCmdShow);
     UpdateWindow(m_hWnd);
 
-	return SUCCEEDED(m_MultiFTHelper.Init(	m_hWnd,
-											m_depthType,
+	return SUCCEEDED(m_MultiFTHelper.Init(	m_depthType,
 											m_depthRes,
 											m_bNearMode,
-											TRUE, // if near mode doesn't work, fall back to default mode
+											TRUE,
+											m_bSeatedSkeletonMode,
 											m_colorType,
 											m_colorRes,
-											m_bSeatedSkeletonMode,
+											m_hWnd,
 											FTHelperCallingBack, 
-											this));
+											this ));
 }
 void SingleFace::InitArgs(int argc, char **argv )
 {
@@ -102,51 +102,24 @@ void SingleFace::InitArgs(int argc, char **argv )
 	m_lpCmdLine = new wchar_t[requiredSize];
 	mbstowcs(m_lpCmdLine, argv[0], requiredSize);
 	m_nCmdShow = argc;
-}
-
-
-// In this function, we display the host program window.
-BOOL SingleFace::InitInstanceInHostWindow()
-{
-    ParseCmdString(m_lpCmdLine);
-
-    WCHAR szTitle[MaxLoadStringChars];                  // The title bar text
-    LoadString(m_hInst, IDS_APP_TITLE, szTitle, ARRAYSIZE(szTitle));
-
-    static const PCWSTR RES_MAP[] = { L"80x60", L"320x240", L"640x480", L"1280x960" };
-    static const PCWSTR IMG_MAP[] = { L"PLAYERID", L"RGB", L"YUV", L"YUV_RAW", L"DEPTH" };
-
-    // Add mode params in title
-    WCHAR szTitleComplete[MAX_PATH];
-    swprintf_s(szTitleComplete, L"%s -- Depth:%s:%s Color:%s:%s NearMode:%s, SeatedSkeleton:%s", szTitle,
-        IMG_MAP[m_depthType], (m_depthRes < 0)? L"ERROR": RES_MAP[m_depthRes], IMG_MAP[m_colorType], (m_colorRes < 0)? L"ERROR": RES_MAP[m_colorRes], m_bNearMode? L"ON": L"OFF",
-        m_bSeatedSkeletonMode?L"ON": L"OFF");
-
-    m_hAccelTable = LoadAccelerators(m_hInst, MAKEINTRESOURCE(IDC_SINGLEFACE));
-   	
-	bool initResult = InitInstance();
-    ShowWindow(m_hWnd, m_nCmdShow);
-    UpdateWindow(m_hWnd);
-	return initResult;
+	ParseCmdString(m_lpCmdLine);
 }
 
 BOOL SingleFace::InitInstance()
 {
 	ParseCmdString(m_lpCmdLine);
-
 	m_pImageBuffer = FTCreateImage();
-    m_pVideoBuffer = FTCreateImage();
-
-	return SUCCEEDED(m_MultiFTHelper.Init(	m_hWnd,
-											m_depthType,
+    m_pVideoBuffer = FTCreateImage();	
+	return SUCCEEDED(m_MultiFTHelper.Init(	m_depthType,
 											m_depthRes,
 											m_bNearMode,
-											TRUE, // if near mode doesn't work, fall back to default mode
+											TRUE,
+											m_bSeatedSkeletonMode,
 											m_colorType,
 											m_colorRes,
-											m_bSeatedSkeletonMode,
+											m_hWnd,
 											FTHelperCallingBack, 
-											this));
+											this ));
 }
 
 
@@ -289,14 +262,14 @@ INT_PTR CALLBACK SingleFace::About(HWND hDlg, UINT message, WPARAM wParam, LPARA
 // Drawing the video window
 BOOL SingleFace::ShowVideo(HDC hdc, int width, int height, int originX, int originY)
 {
-    BOOL ret = TRUE;
+	if(!m_pSensorTrackerPair)
+	{
+		return FALSE;
+	}
 
     // Now, copy a fraction of the camera image into the screen.
-	auto bestTracker = m_MultiFTHelper.GetBestTracker();
-	auto bestImage = bestTracker.second->GetColorImage();
-
-    IFTImage* colorImage = bestImage;//m_MultiFTHelper.GetColorImage();
-    if (colorImage)
+	IFTImage* colorImage = m_pSensorTrackerPair->second->GetColorImage();
+	if (colorImage)
     {
         int iWidth = colorImage->GetWidth();
         int iHeight = colorImage->GetHeight();
@@ -340,19 +313,19 @@ BOOL SingleFace::ShowVideo(HDC hdc, int width, int height, int originX, int orig
                         iTop = iBottom - (int)hy;
                     }
                 }
-
                 int const bmpPixSize = m_pVideoBuffer->GetBytesPerPixel();
                 SetStretchBltMode(hdc, HALFTONE);
                 BITMAPINFO bmi = {sizeof(BITMAPINFO), iWidth, iHeight, 1, static_cast<WORD>(bmpPixSize * CHAR_BIT), BI_RGB, m_pVideoBuffer->GetStride() * iHeight, 5000, 5000, 0, 0};
                 if (0 == StretchDIBits(hdc, originX, originY, width, height,
                     iLeft, iBottom, iRight-iLeft, iTop-iBottom, m_pVideoBuffer->GetBuffer(), &bmi, DIB_RGB_COLORS, SRCCOPY))
                 {
-                    ret = FALSE;
+                    return FALSE;
                 }
             }
         }
+		return TRUE;
     }
-    return ret;
+    return FALSE;
 }
 
 // Drawing code
@@ -360,20 +333,24 @@ BOOL SingleFace::ShowEggAvatar(HDC hdc, int width, int height, int originX, int 
 {
     static int errCount = 0;
     BOOL ret = FALSE;
+	
+	if (m_pSensorTrackerPair)
+	{
+		m_pEggAvatar = m_pSensorTrackerPair->first->GetEggAvatar();
+	
+		if (m_pEggAvatar && m_pImageBuffer && SUCCEEDED(m_pImageBuffer->Allocate(width, height, FTIMAGEFORMAT_UINT8_B8G8R8A8)))
+		{
+			memset(m_pImageBuffer->GetBuffer(), 0, m_pImageBuffer->GetStride() * height); // clear to black
+		
+			m_pEggAvatar->SetScaleAndTranslationToWindow(height, width);
+			m_pEggAvatar->DrawImage(m_pImageBuffer);
 
-    if (m_pImageBuffer && SUCCEEDED(m_pImageBuffer->Allocate(width, height, FTIMAGEFORMAT_UINT8_B8G8R8A8)))
-    {
-        memset(m_pImageBuffer->GetBuffer(), 0, m_pImageBuffer->GetStride() * height); // clear to black
+			BITMAPINFO bmi = {sizeof(BITMAPINFO), width, height, 1, static_cast<WORD>(m_pImageBuffer->GetBytesPerPixel() * CHAR_BIT), BI_RGB, m_pImageBuffer->GetStride() * height, 5000, 5000, 0, 0};
+			errCount += (0 == StretchDIBits(hdc, 0, 0, width, height, 0, 0, width, height, m_pImageBuffer->GetBuffer(), &bmi, DIB_RGB_COLORS, SRCCOPY));
 
-        m_eggavatar.SetScaleAndTranslationToWindow(height, width);
-        m_eggavatar.DrawImage(m_pImageBuffer);
-
-        BITMAPINFO bmi = {sizeof(BITMAPINFO), width, height, 1, static_cast<WORD>(m_pImageBuffer->GetBytesPerPixel() * CHAR_BIT), BI_RGB, m_pImageBuffer->GetStride() * height, 5000, 5000, 0, 0};
-        errCount += (0 == StretchDIBits(hdc, 0, 0, width, height, 0, 0, width, height, m_pImageBuffer->GetBuffer(), &bmi, DIB_RGB_COLORS, SRCCOPY));
-
-        ret = TRUE;
-    }
-
+			ret = TRUE;
+		}
+	}
     return ret;
 }
 
@@ -387,12 +364,18 @@ BOOL SingleFace::PaintWindow(HDC hdc, HWND hWnd)
     int width = rect.right - rect.left;
     int height = rect.bottom - rect.top;
     int halfWidth = width/2;
-
     // Show the video on the right of the window
-    errCount += !ShowVideo(hdc, width - halfWidth, height, halfWidth, 0);
+	m_pSensorTrackerPair = &m_MultiFTHelper.GetBestTracker();
+	if (m_pSensorTrackerPair)
+	{
+		m_pSensorTrackerPair->second->SetWindow(hWnd);
 
-    // Draw the egg avatar on the left of the window
-    errCount += !ShowEggAvatar(hdc, halfWidth, height, 0, 0);
+		errCount += !ShowVideo(hdc, width - halfWidth, height, halfWidth, 0);
+
+		// Draw the egg avatar on the left of the window
+		errCount += !ShowEggAvatar(hdc, halfWidth, height, 0, 0);
+	}
+
     return ret;
 }
 
@@ -407,19 +390,20 @@ void SingleFace::FTHelperCallingBack(PVOID pVoid)
     if (pApp)
     {
 		auto bestTracker = pApp->m_MultiFTHelper.GetBestTracker();
+		pApp->m_pEggAvatar = bestTracker.first->GetEggAvatar();
         IFTResult* pResult = bestTracker.second->GetResult();
         if (pResult && SUCCEEDED(pResult->GetStatus()))
         {
             FLOAT* pAU = NULL;
             UINT numAU;
             pResult->GetAUCoefficients(&pAU, &numAU);
-            pApp->m_eggavatar.SetCandideAU(pAU, numAU);
+            pApp->m_pEggAvatar->SetCandideAU(pAU, numAU);
             FLOAT scale;
             FLOAT rotationXYZ[3];
             FLOAT translationXYZ[3];
             pResult->Get3DPose(&scale, rotationXYZ, translationXYZ);
-            pApp->m_eggavatar.SetTranslations(translationXYZ[0], translationXYZ[1], translationXYZ[2]);
-            pApp->m_eggavatar.SetRotations(rotationXYZ[0], rotationXYZ[1], rotationXYZ[2]);
+            pApp->m_pEggAvatar->SetTranslations(translationXYZ[0], translationXYZ[1], translationXYZ[2]);
+            pApp->m_pEggAvatar->SetRotations(rotationXYZ[0], rotationXYZ[1], rotationXYZ[2]);
         }
     }
 }

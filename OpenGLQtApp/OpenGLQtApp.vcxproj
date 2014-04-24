@@ -37,8 +37,8 @@
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(KINECTSDK10_DIR)\inc;$(FTSDK_DIR)inc;C:\Users\UDESC\Downloads\QtSolutions\qtwinmigrate\src;C:\Users\UDESC\Documents\GitHub\FaceTracking\SingleFace;C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;C:\Users\UDESC\Downloads\DevIL-SDK-x86-1.7.8\include;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\include;C:\Users\UDESC\Downloads\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FTSDK_DIR)Lib\x86;$(KINECTSDK10_DIR)\Lib\x86;C:\Users\UDESC\Downloads\QtSolutions\qtwinmigrate\lib;C:\Users\UDESC\Documents\GitHub\FaceTracking\Out\SingleFace\Win32\Debug;C:\Users\UDESC\Documents\GitHub\OpenGLApplication\Debug;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Documents\GitHub\OpenGLApplication\SingleFace;C:\Users\UDESC\Documents\GitHub\OpenGLApplication\OpenGLApplication;$(KINECTSDK10_DIR)\inc;$(FTSDK_DIR)inc;C:\Users\UDESC\Downloads\assimp-master\assimp-master\include;C:\Users\UDESC\Downloads\DevIL-SDK-x86-1.7.8\include;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\include;C:\Users\UDESC\Downloads\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\UDESC\Documents\GitHub\OpenGLApplication\Win32\Debug;$(FTSDK_DIR)Lib\x86;$(KINECTSDK10_DIR)\Lib\x86;C:\Users\UDESC\Downloads\glew-1.10.0-win32\glew-1.10.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -57,7 +57,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Kinect10.lib;FaceTrackLib.lib;SingleFace.lib;DevIL.lib;freeglut.lib;assimpd.lib;glew32.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;Qt5Quickd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SingleFace.lib;OpenGLHelper.lib;Kinect10.lib;FaceTrackLib.lib;DevIL.lib;freeglut.lib;assimpd.lib;glew32.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;Qt5Quickd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -141,6 +141,7 @@
     <ClCompile Include="OpenGLQtApp.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="AssetWindow.cpp" />
+    <ClCompile Include="TrackerDock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="TrackerDock.h">
@@ -251,24 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenGLQtApp.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OpenGLApplication\OpenGLApplication.vcxproj">
-      <Project>{bb169c6f-9c29-48c1-bccf-45e03b1b6b5c}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
-    </ProjectReference>
-    <ProjectReference Include="..\SingleFace\SingleFace.vcxproj">
-      <Project>{5feeef4f-6788-4af3-a682-91c3110e1bf8}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.qrc">

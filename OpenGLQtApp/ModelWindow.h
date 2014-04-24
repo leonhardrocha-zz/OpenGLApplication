@@ -1,7 +1,7 @@
 #include "OpenGLWindow.h"
 #include <QtGui/QWindow>
 #include <QtGui/QOpenGLFunctions>
-#include "../OpenGLApplication/OpenGLHelper.h"
+#include <OpenGLHelper.h>
 
 class ModelWindow : public OpenGLWindow
 {
