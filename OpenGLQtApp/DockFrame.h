@@ -38,63 +38,46 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+#ifndef _DOCK_FRAME_H
+#define _DOCK_FRAME_H
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#include <QAction>
+#include <QtEvents>
+#include <QFrame>
 #include <QMainWindow>
-#include <QTextEdit>
-#include "QTextEdit"
-#include "DockFrame.h"
-#include "TrackerDock.h"
+#include <QMenu>
+#include <QPainter>
+#include <QImage>
+#include <QColor>
+#include <QDialog>
+#include <QGridLayout>
+#include <QSpinBox>
+#include <QLabel>
+#include <QPainterPath>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QBitmap>
+#include <QtDebug>
 
-class ToolBar;
-QT_FORWARD_DECLARE_CLASS(QMenu)
-QT_FORWARD_DECLARE_CLASS(QSignalMapper)
+#undef DEBUG_SIZEHINTS
 
-class MainWindow : public QMainWindow
+class DockFrame : public QFrame
 {
     Q_OBJECT
-
-    QTextEdit *center;
-    QList<ToolBar*> toolBars;
-    QMenu *dockWidgetMenu;
-    QMenu *mainWindowMenu;
-    QSignalMapper *mapper;
-    QList<QDockWidget*> extraDockWidgets;
-    QAction *createDockWidgetAction;
-    QMenu *destroyDockWidgetMenu;
-
 public:
-    MainWindow(const QMap<QString, QSize> &customSizeHints,
-                QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    DockFrame(const QString &c, QWidget *parent);
 
-	void RegisterTracker(ITracker* tracker) { m_pTracker = tracker; };
-	ITracker* GetTracker() { return m_pTracker; };
-	bool MainWindow::AddTrackerDockWidget();
-protected:
-    void showEvent(QShowEvent *event);
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+
+    void setCustomSizeHint(const QSize &size);
 
 public slots:
-    void actionTriggered(QAction *action);
-    void saveLayout();
-    void loadLayout();
-    void setCorner(int id);
-    void switchLayoutDirection();
-    void setDockOptions();
+    void changeSizeHints();
 
-    void createDockWidget();
-    void destroyDockWidget(QAction *action);
-
-private:
-    void setupToolBar();
-    void setupMenuBar();
-    void setupDockWidgets(const QMap<QString, QSize> &customSizeHints);
-	QMap<QString, QSize> m_customSizeHints;
-	ITracker* m_pTracker;
-
-	
+protected:
+    void paintEvent(QPaintEvent *);
+    QString color;
+    QSize szHint, minSzHint;
 };
-
-
 #endif

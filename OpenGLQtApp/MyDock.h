@@ -43,7 +43,6 @@ public:
     explicit MyDock(const QString &colorName, QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
     QMenu *menu;
-
     void setCustomSizeHint(const QSize &size);
 
 protected:

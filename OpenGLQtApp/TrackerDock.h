@@ -18,6 +18,8 @@ public:
 	{
 		RenderFlags(QWidget::DrawChildren | QWidget::IgnoreMask);
 		setAttribute(Qt::WA_NativeWindow);
+
+
 		//setAttribute(Qt::WA_PaintOnScreen);	
 	}
 	virtual bool nativeEvent(const QByteArray& eventType, void * message, long *result)

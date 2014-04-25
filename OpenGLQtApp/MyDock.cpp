@@ -1,4 +1,5 @@
 #include "MyDock.h"
+#include "DockFrame.h"
 #include <QAction>
 #include <QtEvents>
 #include <QFrame>
@@ -17,19 +18,19 @@
 #include <QBitmap>
 #include <QtDebug>
 
-MyDock::MyDock(const QString &colorName, QWidget *parent, Qt::WindowFlags flags)
+MyDock::MyDock(const QString &name, QWidget *parent, Qt::WindowFlags flags)
     : QDockWidget(parent, flags)
 {
-    setObjectName(colorName + QLatin1String(" Dock Widget"));
+    setObjectName(name + QLatin1String(" Dock Widget"));
     setWindowTitle(objectName() + QLatin1String(" [*]"));
 
-    QFrame *swatch = new QFrame(this);
-    swatch->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    DockFrame *frame = new DockFrame(objectName() + QLatin1String(" Frame"), this);
+    frame->setFrameStyle(QFrame::Box | QFrame::Sunken);
 
-    setWidget(swatch);
+    setWidget(frame);
 
     changeSizeHintsAction = new QAction(tr("Change Size Hints"), this);
-    connect(changeSizeHintsAction, SIGNAL(triggered()), swatch, SLOT(changeSizeHints()));
+    connect(changeSizeHintsAction, SIGNAL(triggered()), frame, SLOT(changeSizeHints()));
 
     closableAction = new QAction(tr("Closable"), this);
     closableAction->setCheckable(true);
@@ -126,7 +127,7 @@ MyDock::MyDock(const QString &colorName, QWidget *parent, Qt::WindowFlags flags)
     windowModifiedAction->setChecked(false);
     connect(windowModifiedAction, SIGNAL(toggled(bool)), this, SLOT(setWindowModified(bool)));
 
-    menu = new QMenu(colorName, this);
+    menu = new QMenu(name, this);
     menu->addAction(toggleViewAction());
     QAction *action = menu->addAction(tr("Raise"));
     connect(action, SIGNAL(triggered()), this, SLOT(raise()));
@@ -150,11 +151,10 @@ MyDock::MyDock(const QString &colorName, QWidget *parent, Qt::WindowFlags flags)
 
     connect(menu, SIGNAL(aboutToShow()), this, SLOT(updateContextMenu()));
 
-    if(colorName == "Black") {
-        leftAction->setShortcut(Qt::CTRL|Qt::Key_W);
-        rightAction->setShortcut(Qt::CTRL|Qt::Key_E);
-        toggleViewAction()->setShortcut(Qt::CTRL|Qt::Key_R);
-    }
+    leftAction->setShortcut(Qt::CTRL|Qt::Key_W);
+    rightAction->setShortcut(Qt::CTRL|Qt::Key_E);
+    toggleViewAction()->setShortcut(Qt::CTRL|Qt::Key_R);
+
 }
 
 void MyDock::updateContextMenu()

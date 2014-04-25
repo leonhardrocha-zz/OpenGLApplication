@@ -98,7 +98,7 @@ MainWindow::MainWindow(const QMap<QString, QSize> &customSizeHints,
 
     setupToolBar();
     setupMenuBar();
-    setupDockWidgets();
+    setupDockWidgets(customSizeHints);
 
     statusBar()->showMessage(tr("Status Bar"));
 }
@@ -275,7 +275,7 @@ QAction *addAction(QMenu *menu, const QString &text, QActionGroup *group, QSigna
     return result;
 }
 
-void MainWindow::setupDockWidgets()
+void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
 {
     qRegisterMetaType<QDockWidget::DockWidgetFeatures>();
 

@@ -107,6 +107,15 @@
     <ClCompile Include="TrackerDock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DockFrame.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DockFrame.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="DockFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_openglqtapp.h">
@@ -148,6 +157,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="TrackerDock.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DockFrame.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
