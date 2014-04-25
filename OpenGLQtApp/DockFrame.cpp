@@ -55,9 +55,12 @@ QSize DockFrame::minimumSizeHint() const
     return minSzHint;
 }
 
-void DockFrame::paintEvent(QPaintEvent *)
+void DockFrame::paintEvent(QPaintEvent *e)
 {
-    QPainter p(this);
+
+#ifdef DEBUG_SIZEHINTS
+
+	QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(rect(), bgColorForName(color));
 
@@ -68,7 +71,6 @@ void DockFrame::paintEvent(QPaintEvent *)
 
     p.restore();
 
-#ifdef DEBUG_SIZEHINTS
     p.setRenderHint(QPainter::Antialiasing, false);
 
     QSize sz = size();

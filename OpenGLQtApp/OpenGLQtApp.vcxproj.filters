@@ -104,9 +104,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MyDock.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="TrackerDock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_DockFrame.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -156,10 +153,10 @@
     <CustomBuild Include="MyDock.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="TrackerDock.h">
+    <CustomBuild Include="DockFrame.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="DockFrame.h">
+    <CustomBuild Include="TrackerFrame.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

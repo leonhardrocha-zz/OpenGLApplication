@@ -45,8 +45,8 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include "QTextEdit"
+#include "ITracker.h"
 #include "DockFrame.h"
-#include "TrackerDock.h"
 
 class ToolBar;
 QT_FORWARD_DECLARE_CLASS(QMenu)

@@ -41,7 +41,7 @@
 
 #include "mainwindow.h"
 #include "MyDock.h"
-#include "TrackerDock.h"
+#include "TrackerFrame.h"
 #include "toolbar.h"
 #include <QDockWidget>
 #include <QAction>
@@ -326,9 +326,12 @@ bool MainWindow::AddTrackerDockWidget()
 		return false;
 	}
 	QString name = QString::fromLatin1("Tracker");
-	TrackerDock *trackerDock = new TrackerDock(*m_pTracker, name, this, Qt::WindowFlags(0));
+	TrackerFrame *frame = new TrackerFrame(name + QLatin1String(" Frame"), this,  m_pTracker);
+    frame->setFrameStyle(QFrame::Box | QFrame::Sunken);
+
+	MyDock *trackerDock = new MyDock(name + QLatin1String(" Dock"), this, Qt::WindowFlags(0), frame);
 	trackerDock->setCustomSizeHint(m_customSizeHints.value("Tracker"));
-	trackerDock->setFloating(true);
+	//trackerDock->setFloating(true);
 	addDockWidget(Qt::RightDockWidgetArea, trackerDock);	
 	dockWidgetMenu->addMenu(trackerDock->menu);
 	

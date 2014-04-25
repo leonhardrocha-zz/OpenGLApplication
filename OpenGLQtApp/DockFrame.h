@@ -40,7 +40,6 @@
 ****************************************************************************/
 #ifndef _DOCK_FRAME_H
 #define _DOCK_FRAME_H
-
 #include <QAction>
 #include <QtEvents>
 #include <QFrame>
@@ -76,7 +75,7 @@ public slots:
     void changeSizeHints();
 
 protected:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *e);
     QString color;
     QSize szHint, minSzHint;
 };

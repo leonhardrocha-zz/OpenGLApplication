@@ -148,10 +148,9 @@
     <ClCompile Include="OpenGLQtApp.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="AssetWindow.cpp" />
-    <ClCompile Include="TrackerDock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="TrackerDock.h">
+    <CustomBuild Include="TrackerFrame.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Message>

@@ -1,6 +1,7 @@
 #ifndef MYDOCK_H
 #define MYDOCK_H
-
+#include "ITracker.h"
+#include "TrackerFrame.h"
 #include <QAction>
 #include <QFrame>
 #include <QDockWidget>
@@ -40,8 +41,8 @@ class MyDock : public QDockWidget
     QAction *windowModifiedAction;
 
 public:
-    explicit MyDock(const QString &colorName, QWidget *parent = 0, Qt::WindowFlags flags = 0);
-
+    explicit MyDock(const QString &name, QWidget *parent = 0, Qt::WindowFlags flags = 0, DockFrame *frame = NULL);
+	DockFrame* m_dockFrame;
     QMenu *menu;
     void setCustomSizeHint(const QSize &size);
 

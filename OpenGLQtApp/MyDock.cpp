@@ -1,5 +1,4 @@
 #include "MyDock.h"
-#include "DockFrame.h"
 #include <QAction>
 #include <QtEvents>
 #include <QFrame>
@@ -18,16 +17,16 @@
 #include <QBitmap>
 #include <QtDebug>
 
-MyDock::MyDock(const QString &name, QWidget *parent, Qt::WindowFlags flags)
-    : QDockWidget(parent, flags)
+MyDock::MyDock(const QString &name, QWidget *parent, Qt::WindowFlags flags, DockFrame *frame)
+    : QDockWidget(parent, flags), m_dockFrame(frame)
 {
     setObjectName(name + QLatin1String(" Dock Widget"));
     setWindowTitle(objectName() + QLatin1String(" [*]"));
-
-    DockFrame *frame = new DockFrame(objectName() + QLatin1String(" Frame"), this);
-    frame->setFrameStyle(QFrame::Box | QFrame::Sunken);
-
-    setWidget(frame);
+	
+	if (m_dockFrame)
+	{
+		setWidget(m_dockFrame);
+	}
 
     changeSizeHintsAction = new QAction(tr("Change Size Hints"), this);
     connect(changeSizeHintsAction, SIGNAL(triggered()), frame, SLOT(changeSizeHints()));
