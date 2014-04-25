@@ -14,26 +14,12 @@
 
 typedef void (*FTHelperCallBack)(PVOID lpParam);
 
-class SensorAlignmentComparison
-{
-  bool isDecreasing;
-public:
-  SensorAlignmentComparison(const bool& revparam=false)
-    {isDecreasing=revparam;}
-  bool operator() (const KinectSensor* lhs, const KinectSensor* rhs) const
-  {
-    if (isDecreasing) return (lhs->m_smallestDistance > rhs->m_smallestDistance);
-    else return (lhs->m_smallestDistance < rhs->m_smallestDistance);
-  }
-};
+
 
 class MultiFTHelper;
 
 typedef std::pair<KinectSensor*,MultiFTHelper*> TrackerPair;
-typedef std::map<KinectSensor*,MultiFTHelper*, SensorAlignmentComparison> TrackerMap;
-
-
-
+typedef std::vector<TrackerPair> TrackerPairVector;
 
 class MultiFTHelper
 {
@@ -55,7 +41,6 @@ public:
 	HRESULT Stop();
 	HRESULT GetTrackerResult();
 	int StartFaceTracker();
-	void SwapKinectSensor();
 	void CheckCameraInput();
 	IFTResult*		GetResult()        { return(m_pFTResult);}
     IFTImage*		GetColorImage()    { return(m_colorImage);}
@@ -80,12 +65,14 @@ public:
     IFTImage*                   m_colorImage;
     IFTImage*                   m_depthImage;
     FT_VECTOR3D                 m_hint3D[2]; 
+	
+	FT_WEIGHTED_RECT			m_faceConfidence;
 
 	bool						m_KinectSensorPresent;
     float                       m_XCenterFace;
     float                       m_YCenterFace;
 
-	TrackerMap validSensors;
+	TrackerPairVector	 validSensors;
 
 	HWND                 m_hWnd;
 	bool                 m_LastTrackSucceeded;
@@ -103,7 +90,7 @@ public:
     BOOL SubmitFraceTrackingResult(IFTResult* pResult);
     void SetCenterOfImage(IFTResult* pResult);
     DWORD WINAPI FaceTrackingThread();
-
+	static bool SortTrackerPair(const TrackerPair& pair1, const TrackerPair& pair2);
     static DWORD WINAPI FaceTrackingStaticThread(PVOID lpParam);
 	
 };

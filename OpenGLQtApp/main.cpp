@@ -1,6 +1,7 @@
 #include "OpenGLQtApp.h"
 #include "AssetWindow.h"
 #include "MainWindow.h"
+#include "KinectTracker.h"
 #include <QtWidgets/QApplication>
 
 
@@ -134,7 +135,9 @@ int main(int argc, char **argv)
 	QMap<QString, QSize> customSizeHints = parseCustomSizeHints(argc, argv);
 	MainWindow mainWindow(customSizeHints);
 	mainWindow.menuBar()->addMenu("&File")->addAction("&Exit", &app, SLOT(quit()));
-
+	ITracker* tracker = new KinectTracker();
+	mainWindow.RegisterTracker(tracker);
+	mainWindow.AddTrackerDockWidget();
 	QWidget central(&mainWindow);
 	
 	QWidget trackerWidget(&central);

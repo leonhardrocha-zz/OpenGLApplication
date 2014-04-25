@@ -47,6 +47,12 @@
     <ClInclude Include="FTHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ITracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KinectTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

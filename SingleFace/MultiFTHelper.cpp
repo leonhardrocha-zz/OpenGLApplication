@@ -146,10 +146,16 @@ BOOL MultiFTHelper::SubmitFraceTrackingResult(IFTResult* pResult)
     return TRUE;
 }
 
+bool MultiFTHelper::SortTrackerPair(const TrackerPair& pair1, const TrackerPair& pair2)
+{
+	return pair1.second->m_faceConfidence.Weight > pair2.second->m_faceConfidence.Weight;
+}
+
 TrackerPair MultiFTHelper::GetBestTracker()
-{ 
+{ 	 
 	 if( validSensors.size() > 0)
 	 {
+		std::sort(validSensors.begin(), validSensors.end(), MultiFTHelper::SortTrackerPair);
 		auto best = validSensors.begin(); 
 		return TrackerPair(best->first, best->second);
 	 }
@@ -251,8 +257,8 @@ HRESULT MultiFTHelper::Init(NUI_IMAGE_TYPE       depthType,
 			{				
 				m_KinectSensorPresent = true;
 				trackerSlave->SetCenterOfImage(NULL);
-				sensor->m_smallestDistance = static_cast <float> (rand());
-				validSensors.insert(TrackerPair(sensor, trackerSlave));
+				sensor->m_smallestDistance = FLT_MAX;
+				validSensors.push_back(TrackerPair(sensor, trackerSlave));
 			}			
 		}
 		else
@@ -388,7 +394,7 @@ DWORD WINAPI MultiFTHelper::FaceTrackingThread()
 			}
 			
 		}
-		auto bestSensor = GetBestTracker();//validSensors.begin();
+		auto bestSensor = GetBestTracker();
 		auto tracker = bestSensor.second;
 		
 		m_pKinectSensor = bestSensor.first;
@@ -399,10 +405,6 @@ DWORD WINAPI MultiFTHelper::FaceTrackingThread()
 			UpdateWindow(m_hWnd);
 		}
 		
-		if (!tracker->m_LastTrackSucceeded)
-		{
-			SwapKinectSensor();
-		}
         Sleep(16);	
     }
 	    
@@ -438,23 +440,22 @@ HRESULT MultiFTHelper::GetTrackerResult()
                 hrFT = m_pFaceTracker->StartTracking(&sensorData, NULL, hint, m_pFTResult);
             }
 
+			RECT roi;
+			HRESULT hr = m_pFTResult->GetFaceRect(&roi);
+			bool  hasFoundFace = (SUCCEEDED(hr) && (roi.bottom != roi.top && roi.left != roi.right));
+			FT_WEIGHTED_RECT faceConfidence;
+			UINT pFaceCount = 1;
+			hr = m_pFaceTracker->DetectFaces(&sensorData, hasFoundFace ? &roi : NULL, &faceConfidence, &pFaceCount);
+			if (SUCCEEDED(hr))
+			{
+				m_faceConfidence = faceConfidence;
+			}
         }
     }
 
 	return hrFT;
 }
 
-void MultiFTHelper::SwapKinectSensor()
-{
-	if (m_KinectSensorPresent)
-	{
-		auto bestSensor = validSensors.begin();
-		auto tmpSensor = bestSensor->first;
-		auto tmpTracker = bestSensor->second;
-		validSensors.erase(bestSensor);
-		validSensors.insert(TrackerPair(tmpSensor, tmpTracker));
-	}
-}
 
 // Get a video image and process it.
 void MultiFTHelper::CheckCameraInput()

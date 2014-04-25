@@ -44,7 +44,8 @@
 
 #include <QMainWindow>
 #include <QTextEdit>
-
+#include "QTextEdit"
+#include "TrackerDock.h"
 
 class ToolBar;
 QT_FORWARD_DECLARE_CLASS(QMenu)
@@ -67,7 +68,9 @@ public:
     MainWindow(const QMap<QString, QSize> &customSizeHints,
                 QWidget *parent = 0, Qt::WindowFlags flags = 0);
 
-
+	void RegisterTracker(ITracker* tracker) { m_pTracker = tracker; };
+	ITracker* GetTracker() { return m_pTracker; };
+	bool MainWindow::AddTrackerDockWidget();
 protected:
     void showEvent(QShowEvent *event);
 
@@ -85,7 +88,9 @@ public slots:
 private:
     void setupToolBar();
     void setupMenuBar();
-    void setupDockWidgets(const QMap<QString, QSize> &customSizeHints);
+    void setupDockWidgets();
+	QMap<QString, QSize> m_customSizeHints;
+	ITracker* m_pTracker;
 
 	
 };

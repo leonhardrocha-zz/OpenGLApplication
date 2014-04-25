@@ -86,7 +86,7 @@ Q_DECLARE_METATYPE(QDockWidget::DockWidgetFeatures)
 
 MainWindow::MainWindow(const QMap<QString, QSize> &customSizeHints,
                         QWidget *parent, Qt::WindowFlags flags)
-    : QMainWindow(parent, flags)
+    : QMainWindow(parent, flags), m_pTracker(NULL), m_customSizeHints(customSizeHints)
 {
     setObjectName("MainWindow");
     setWindowTitle("Qt Main Window Example");
@@ -98,7 +98,7 @@ MainWindow::MainWindow(const QMap<QString, QSize> &customSizeHints,
 
     setupToolBar();
     setupMenuBar();
-    setupDockWidgets(customSizeHints);
+    setupDockWidgets();
 
     statusBar()->showMessage(tr("Status Bar"));
 }
@@ -275,7 +275,7 @@ QAction *addAction(QMenu *menu, const QString &text, QActionGroup *group, QSigna
     return result;
 }
 
-void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
+void MainWindow::setupDockWidgets()
 {
     qRegisterMetaType<QDockWidget::DockWidgetFeatures>();
 
@@ -307,31 +307,7 @@ void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
     ::addAction(corner_menu, tr("Right dock area"), group, mapper, 7);
 
     dockWidgetMenu->addSeparator();
-
-    static const struct Set {
-        const char * name;
-        uint flags;
-        Qt::DockWidgetArea area;
-    } sets [] = {
-        { "Black", 0, Qt::TopDockWidgetArea },
-    };
-    const int setCount = sizeof(sets) / sizeof(Set);
-
-    for (int i = 0; i < setCount; ++i) {
-        TrackerDock *swatch = new TrackerDock(tr(sets[i].name), this, Qt::WindowFlags(sets[i].flags));
-        
-        QString name = QString::fromLatin1(sets[i].name);
-        if (customSizeHints.contains(name))
-		{
-            swatch->setCustomSizeHint(customSizeHints.value(name));
-		}
-		swatch->setFloating(true);
-
-        addDockWidget(sets[i].area, swatch);	
-        dockWidgetMenu->addMenu(swatch->menu);
-		
-    }
-
+	
     createDockWidgetAction = new QAction(tr("Add dock widget..."), this);
     connect(createDockWidgetAction, SIGNAL(triggered()), this, SLOT(createDockWidget()));
     destroyDockWidgetMenu = new QMenu(tr("Destroy dock widget"), this);
@@ -343,6 +319,21 @@ void MainWindow::setupDockWidgets(const QMap<QString, QSize> &customSizeHints)
     dockWidgetMenu->addMenu(destroyDockWidgetMenu);
 }
 
+bool MainWindow::AddTrackerDockWidget()
+{
+	if (!m_pTracker)
+	{
+		return false;
+	}
+	QString name = QString::fromLatin1("Tracker");
+	TrackerDock *trackerDock = new TrackerDock(*m_pTracker, name, this, Qt::WindowFlags(0));
+	trackerDock->setCustomSizeHint(m_customSizeHints.value("Tracker"));
+	trackerDock->setFloating(true);
+	addDockWidget(Qt::RightDockWidgetArea, trackerDock);	
+	dockWidgetMenu->addMenu(trackerDock->menu);
+	
+	return true;
+}
 void MainWindow::setCorner(int id)
 {
     switch (id) {

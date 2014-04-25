@@ -1,29 +1,32 @@
+#ifndef _TRACKER_DOCK_H
+#define _TRACKER_DOCK_H
+
 #include <QWidget>
 #include <QEvent>
 #include <QPaintEngine>
 #include <QThread>
-#include "SingleFace.h"
 #include "MyDock.h"
+#include "ITracker.h"
 
-typedef std::pair<MyTracker&,void*> TrackerEvent;
+typedef std::pair<ITracker&,void*> TrackerEvent;
 
 class  TrackerDock :  public MyDock
 {
 public:
 
-	TrackerDock::TrackerDock(const QString &colorName, QWidget *parent, Qt::WindowFlags flags) : MyDock(colorName, parent, flags)
+	TrackerDock::TrackerDock(ITracker& tracker, const QString &dockName, QWidget *parent, Qt::WindowFlags flags) : MyDock(dockName, parent, flags), m_Tracker(tracker)
 	{
 		RenderFlags(QWidget::DrawChildren | QWidget::IgnoreMask);
 		setAttribute(Qt::WA_NativeWindow);
-		//setAttribute(Qt::WA_PaintOnScreen);
-	
-		tracker.InitInstance();
+		//setAttribute(Qt::WA_PaintOnScreen);	
 	}
 	virtual bool nativeEvent(const QByteArray& eventType, void * message, long *result)
 	{	
-		tracker.PaintEvent(message);
+		m_Tracker.PaintEvent(message);
 		return true;
 	}
 
-	MyTracker tracker;
+	ITracker& m_Tracker;
 };
+
+#endif

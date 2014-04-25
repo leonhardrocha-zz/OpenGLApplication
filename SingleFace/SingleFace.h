@@ -10,9 +10,11 @@
 //#include "EggAvatar.h"
 #include "MultiFTHelper.h"
 
+class KinectTracker;
+
 class SingleFace
 {
-
+	friend class KinectTracker;
 public:
     SingleFace::SingleFace()
 		: m_hInst(NULL)
@@ -29,7 +31,6 @@ public:
         , m_bSeatedSkeletonMode(TRUE)	
 {
 }	
-
 	~SingleFace()	{ UninitInstance();	};
 	
 
@@ -78,20 +79,3 @@ protected:
 
 };
 
-
-class MyTracker : public SingleFace
-{
-public:
-	MyTracker::MyTracker () 
-	{
-	}
-
-	void PaintEvent(void *message) 
-	{	
-		MSG* msg = reinterpret_cast<MSG*>(message);
-		if (msg != NULL)
-		{
-			WndProc(msg->hwnd, msg->message, msg->wParam, msg->lParam);
-		}
-	}
-};

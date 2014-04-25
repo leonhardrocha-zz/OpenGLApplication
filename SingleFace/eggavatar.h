@@ -88,6 +88,9 @@ private:
     float m_UpperEyeLid;
     float m_LowerEyeLid;
 
+
+	float m_PitchOffset;
+	float m_YawOffset;
     float m_Pitch;
     float m_Yaw;
     float m_Roll;
